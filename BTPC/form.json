@@ -1,9 +1,8 @@
 
   "elements": [
-    { "name": "Mac", "type": "ValidationTextBox", "caption": "Mac" },
-    { "name": "ScanInterval", "type": "IntervalBox", "caption": "Sekunden" }
+    { "name": "id_source_string", "type": "SelectVariable", "caption": "String_Variable" },
   ],
   "actions": [
-    { "type": "Button", "label": "Suchen", "onClick": "print_r(BTP_Scan($id));" }
+    
   ]
 }
