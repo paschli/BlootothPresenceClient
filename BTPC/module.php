@@ -111,16 +111,20 @@ class BTPClient extends IPSModule {
         IPS_SetHidden($this->GetIDForIdent('PRESENT_SINCE'), !$state);
         IPS_SetHidden($this->GetIDForIdent('ABSENT_SINCE'), $state);
 	*/
-	$lastState = GetValueBoolean($UserInstID->GetIDForIdent('STATE'));
-        SetValueBoolean($UserInstID->GetIDForIdent('STATE'), $state);
-        if ($state) SetValueString($UserInstID->GetIDForIdent('NAME'), $name);
+	$id_state=IPS_GetInstanceIDByName('STATE', $inst_id);    
+	$lastState = GetValueBoolean($id_state);
+        SetValueBoolean($id_state, $state);
+	$id_name=IPS_GetInstanceIDByName('NAME', $inst_id);    
+        if ($state) SetValueString($id_name, $name);
+	$id_anw=IPS_GetInstanceIDByName('PRESENT_SINCE', $inst_id);  
+	$id_abw=IPS_GetInstanceIDByName('ABSENT_SINCE', $inst_id);  
         if ($lastState != $state) {
-          if ($state) SetValueInteger($UserInstID->GetIDForIdent('PRESENT_SINCE'), $anw);
-          if (!$state) SetValueInteger($UserInstID->GetIDForIdent('ABSENT_SINCE'), $abw);
+          if ($state) SetValueInteger($id_anw, $anw);
+          if (!$state) SetValueInteger($id_abw, $abw);
         
       
-        IPS_SetHidden($UserInstID->GetIDForIdent('PRESENT_SINCE'), !$state);
-        IPS_SetHidden($UserInstID->GetIDForIdent('ABSENT_SINCE'), $state);
+        IPS_SetHidden($id_anw, !$state);
+        IPS_SetHidden($id_abw, $state);
       }
       IPS_SemaphoreLeave('BTPCScan');
     } else {
