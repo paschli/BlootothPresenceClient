@@ -82,20 +82,25 @@ class BTPClient extends IPSModule {
         $state = ($search != '');
         }*/
 	//User Namen prüfen, ob Instance schon angelegt ist
-	$inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));
-	$parent_id=IPS_GetParent($inst_id);    
-	$inst_obj=IPS_GetObject($inst_id);
-	$inst_name=$inst_obj['ObjectName'];
+	$inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz 
+	$parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
+	$inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
+	$inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz lesen
 	IPS_LogMessage('BTPClient',"Objekt Name:".$inst_name);
-	$InstanzID = @IPS_GetInstanceIDByName($user, $parent_id);
-	if ($InstanzID === false){
+	$UserInstID = @IPS_GetInstanceIDByName($user, $parent_id); // Instanz mit Namen suchen, der im "USER"-Eintrag steht
+	if ($UserInstID === false){				// Instanz nicht gefunden
     	 IPS_LogMessage('BTPClient',"Instanz mit Namen: ".$user." nicht gefunden! Muss neu angelegt werden!");
 	 IPS_LogMessage('BTPClient',"Anlegen in: ".$parent_id);	
+	 $NewInsID = IPS_CreateInstance("{58C01EE2-6859-492A-9B7B-25EDAA6D48FE}");
+	 IPS_SetName($NewInsID, $user); // Instanz benennen
+	 IPS_SetParent($NewInsID, $parent_id); // Instanz einsortieren unter der übergeordneten Instanz
+	 $UserInstID=$NewInsID;
 	}
-	else{
+	else{							// instanz gefunden
     	 IPS_LogMessage('BTPClient',"Instanz mit Namen: ".$user." gefunden! ID:".$InstanzID);
+	 
 	}
-        $lastState = GetValueBoolean($this->GetIDForIdent('STATE'));
+        /*$lastState = GetValueBoolean($this->GetIDForIdent('STATE'));
         SetValueBoolean($this->GetIDForIdent('STATE'), $state);
         if ($state) SetValueString($this->GetIDForIdent('NAME'), $name);
         if ($lastState != $state) {
@@ -105,6 +110,17 @@ class BTPClient extends IPSModule {
       
         IPS_SetHidden($this->GetIDForIdent('PRESENT_SINCE'), !$state);
         IPS_SetHidden($this->GetIDForIdent('ABSENT_SINCE'), $state);
+	*/
+	$lastState = GetValueBoolean($UserInstID->GetIDForIdent('STATE'));
+        SetValueBoolean($UserInstID->GetIDForIdent('STATE'), $state);
+        if ($state) SetValueString($UserInstID->GetIDForIdent('NAME'), $name);
+        if ($lastState != $state) {
+          if ($state) SetValueInteger($UserInstID->GetIDForIdent('PRESENT_SINCE'), $anw);
+          if (!$state) SetValueInteger($UserInstID->GetIDForIdent('ABSENT_SINCE'), $abw);
+        
+      
+        IPS_SetHidden($UserInstID->GetIDForIdent('PRESENT_SINCE'), !$state);
+        IPS_SetHidden($UserInstID->GetIDForIdent('ABSENT_SINCE'), $state);
       }
       IPS_SemaphoreLeave('BTPCScan');
     } else {
