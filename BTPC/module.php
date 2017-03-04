@@ -2,7 +2,7 @@
 class BTPClient extends IPSModule {
   public function Create() {
     parent::Create();
-    $this->RegisterPropertyInteger('id_source_string', 0);
+    $this->RegisterPropertyString('id_source_string', '');
     //$this->RegisterPropertyInteger('ScanInterval', 60);
   }
   public function ApplyChanges() {
