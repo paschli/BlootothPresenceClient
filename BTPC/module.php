@@ -97,7 +97,7 @@ class BTPClient extends IPSModule {
 	 $UserInstID=$NewInsID;
 	}
 	else{							// instanz gefunden
-    	 IPS_LogMessage('BTPClient',"Instanz mit Namen: ".$user." gefunden! ID:".$InstanzID);
+    	 IPS_LogMessage('BTPClient',"Instanz mit Namen: ".$user." gefunden! ID:".$UserInstID);
 	 
 	}
         /*$lastState = GetValueBoolean($this->GetIDForIdent('STATE'));
