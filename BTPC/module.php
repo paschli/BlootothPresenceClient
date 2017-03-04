@@ -82,7 +82,7 @@ class BTPClient extends IPSModule {
         $state = ($search != '');
         }*/
 	//User Namen prüfen, ob Instance schon angelegt ist
-	$inst_id=IPS_GetParrent($this->GetIDForIdent('STATE'));
+	$inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));
 	$inst_obj=IPS_GetObject($inst_id);
 	$inst_name=$inst_obj['ObjectName'];
 	IPS_LogMessage('BTPClient',"Objekt Name:".$inst_name);    
