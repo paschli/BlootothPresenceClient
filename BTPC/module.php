@@ -2,13 +2,13 @@
 class BTPClient extends IPSModule {
   public function Create() {
     parent::Create();
-    $this->RegisterPropertyInteger('id_source_string', 0);
+    $this->RegisterPropertyInteger('idSourceString', 0);
     //$this->RegisterPropertyInteger('ScanInterval', 60);
   }
   public function ApplyChanges() {
     parent::ApplyChanges();
     //$this->RegisterPropertyInteger('ScanInterval', 30);
-    $this->RegisterPropertyInteger('id_source_string', 0);	  
+    $this->RegisterPropertyInteger('idSourceString', 0);	  
     $stateId = $this->RegisterVariableBoolean('STATE', 'Zustand', '~Presence', 1);
     $presentId = $this->RegisterVariableInteger('PRESENT_SINCE', 'Anwesend seit', '~UnixTimestamp', 3);
     $absentId = $this->RegisterVariableInteger('ABSENT_SINCE', 'Abwesend seit', '~UnixTimestamp', 3);
@@ -17,7 +17,7 @@ class BTPClient extends IPSModule {
     IPS_SetIcon($this->GetIDForIdent('NAME'), 'Keyboard');
     IPS_SetIcon($this->GetIDForIdent('PRESENT_SINCE'), 'Clock');
     IPS_SetIcon($this->GetIDForIdent('ABSENT_SINCE'), 'Clock');
-    if($this->GetIDForIdent('id_source_string')!=0){  
+    if($this->GetIDForIdent('idSourceString')!=0){  
     	$this->RegisterTimer('OnStringChange', 0, 'BTPC_Scan($id)');
     }
   }
@@ -29,7 +29,7 @@ class BTPClient extends IPSModule {
     }
     if (!$id) {
       $id = IPS_CreateEvent(0);
-      IPS_SetEventTrigger($id, 1, $this->GetIDForIdent('id_source_string')); //Bei Änderung von der gewählten Variable 
+      IPS_SetEventTrigger($id, 1, $this->GetIDForIdent('idSourceString')); //Bei Änderung von der gewählten Variable 
       IPS_SetEventActive($id, true);             //Ereignis aktivieren
       IPS_SetParent($id, $this->InstanceID);
       IPS_SetIdent($id, $ident);
@@ -54,7 +54,7 @@ class BTPClient extends IPSModule {
   public function Scan() {
     if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
       //$mac = $this->ReadPropertyString('Mac');
-      $string=GetValueString($this->GetIDForIdent('id_source_string'));
+      $string=GetValueString($this->GetIDForIdent('idSourceString'));
       IPS_LogMessage('BTPClient',"String eingelesen");
       $array=explode(";",$string);
       foreach($array as $item){
