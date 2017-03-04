@@ -111,16 +111,21 @@ class BTPClient extends IPSModule {
         IPS_SetHidden($this->GetIDForIdent('PRESENT_SINCE'), !$state);
         IPS_SetHidden($this->GetIDForIdent('ABSENT_SINCE'), $state);
 	*/
-	IPS_LogMessage('BTPClient',"Suche STATE ".$UserInstID);
+	IPS_LogMessage('BTPClient',"Suche Zustand in".$UserInstID);
 	$id_state=IPS_GetVariableIDByName('Zustand', $inst_id); 
-	
+	IPS_LogMessage('BTPClient',"Gefunden =".$id_state);
 	$lastState = GetValueBoolean($id_state);
         SetValueBoolean($id_state, $state);
-	IPS_LogMessage('BTPClient',"Suche NAME ".$UserInstID);
-	$id_name=IPS_GetVariableIDByName('Name_Device', $inst_id);    
+	IPS_LogMessage('BTPClient',"Suche Name_Device in".$UserInstID);
+	$id_name=IPS_GetVariableIDByName('Name_Device', $inst_id);  
+	IPS_LogMessage('BTPClient',"Gefunden =".$id_name);
         if ($state) SetValueString($id_name, $name);
-	$id_anw=IPS_GetVariableIDByName('Abwesend seit', $inst_id);  
-	$id_abw=IPS_GetVariableIDByName('Anwesend seit', $inst_id);  
+	IPS_LogMessage('BTPClient',"Suche Abwesend seit in".$UserInstID);
+	$id_anw=IPS_GetVariableIDByName('Abwesend seit', $inst_id);
+	IPS_LogMessage('BTPClient',"Gefunden =".$id_anw);
+	IPS_LogMessage('BTPClient',"Suche Anwesend seit in".$UserInstID);
+	$id_abw=IPS_GetVariableIDByName('Anwesend seit', $inst_id);
+	IPS_LogMessage('BTPClient',"Gefunden =".$id_abw);
         if ($lastState != $state) {
           if ($state) SetValueInteger($id_anw, $anw);
           if (!$state) SetValueInteger($id_abw, $abw);
