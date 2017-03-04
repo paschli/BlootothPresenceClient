@@ -30,7 +30,7 @@ class BTPClient extends IPSModule {
     }
     if (!$id) {
       $id = IPS_CreateEvent(0);
-      IPS_SetEventTrigger($id, 1, $this->GetIDForIdent('idSourceString')); //Bei Änderung von der gewählten Variable 
+      IPS_SetEventTrigger($id, 1, $this->ReadPropertyInteger('idSourceString')); //Bei Änderung von der gewählten Variable 
       IPS_SetEventActive($id, true);             //Ereignis aktivieren
       IPS_SetParent($id, $this->InstanceID);
       IPS_SetIdent($id, $ident);
@@ -55,7 +55,7 @@ class BTPClient extends IPSModule {
   public function Scan() {
     if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
       //$mac = $this->ReadPropertyString('Mac');
-      $string=GetValueString($this->GetIDForIdent('idSourceString'));
+      $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
       IPS_LogMessage('BTPClient',"String eingelesen");
       $array=explode(";",$string);
       foreach($array as $item){
