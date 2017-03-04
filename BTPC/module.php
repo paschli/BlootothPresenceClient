@@ -112,15 +112,15 @@ class BTPClient extends IPSModule {
         IPS_SetHidden($this->GetIDForIdent('ABSENT_SINCE'), $state);
 	*/
 	IPS_LogMessage('BTPClient',"Suche STATE ".$UserInstID);
-	$id_state=IPS_GetVariableIDByName('STATE', $inst_id); 
+	$id_state=IPS_GetVariableIDByName('Zustand', $inst_id); 
 	
 	$lastState = GetValueBoolean($id_state);
         SetValueBoolean($id_state, $state);
 	IPS_LogMessage('BTPClient',"Suche NAME ".$UserInstID);
-	$id_name=IPS_GetVariableIDByName('NAME', $inst_id);    
+	$id_name=IPS_GetVariableIDByName('Name_Device', $inst_id);    
         if ($state) SetValueString($id_name, $name);
-	$id_anw=IPS_GetVariableIDByName('PRESENT_SINCE', $inst_id);  
-	$id_abw=IPS_GetVariableIDByName('ABSENT_SINCE', $inst_id);  
+	$id_anw=IPS_GetVariableIDByName('Abwesend seit', $inst_id);  
+	$id_abw=IPS_GetVariableIDByName('Anwesend seit', $inst_id);  
         if ($lastState != $state) {
           if ($state) SetValueInteger($id_anw, $anw);
           if (!$state) SetValueInteger($id_abw, $abw);
