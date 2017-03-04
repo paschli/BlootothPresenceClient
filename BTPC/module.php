@@ -81,6 +81,11 @@ class BTPClient extends IPSModule {
         $search = trim(shell_exec("hcitool name $mac"));
         $state = ($search != '');
         }*/
+	//User Namen prüfen, ob Instance schon angelegt ist
+	$inst_id=($this->ReadPropertyInteger('idSourceString'));
+	$inst_obj=IPS_GetObject($inst_id);
+	$inst_name=$inst_obj['ObjectName'];
+	IPS_LogMessage('BTPClient',"Objekt Name:".$inst_name);    
         $lastState = GetValueBoolean($this->GetIDForIdent('STATE'));
         SetValueBoolean($this->GetIDForIdent('STATE'), $state);
         if ($state) SetValueString($this->GetIDForIdent('NAME'), $name);
