@@ -1,5 +1,5 @@
 <?php
-class BTPDevice extends IPSModule {
+class BTPClient extends IPSModule {
   public function Create() {
     parent::Create();
     $this->RegisterPropertyInteger('id_source_string', 0);
