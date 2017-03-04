@@ -90,7 +90,7 @@ class BTPClient extends IPSModule {
 	$InstanzID = @IPS_GetInstanceIDByName($user, $parent_id);
 	if ($InstanzID === false){
     	 IPS_LogMessage('BTPClient',"Instanz mit Namen: ".$user." nicht gefunden! Muss neu angelegt werden!");
-		
+	 IPS_LogMessage('BTPClient',"Anlegen in: ".$parent_id);	
 	}
 	else{
     	 IPS_LogMessage('BTPClient',"Instanz mit Namen: ".$user." gefunden! ID:".$InstanzID);
