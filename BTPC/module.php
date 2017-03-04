@@ -16,7 +16,7 @@ class BTPClient extends IPSModule {
     IPS_SetIcon($this->GetIDForIdent('NAME'), 'Keyboard');
     IPS_SetIcon($this->GetIDForIdent('PRESENT_SINCE'), 'Clock');
     IPS_SetIcon($this->GetIDForIdent('ABSENT_SINCE'), 'Clock');
-    $this->RegisterTimer('OnStringChange', $this->ReadPropertyInteger('ScanInterval'), 'BTPC_Scan($id)');
+    $this->RegisterTimer('OnStringChange', 0, 'BTPC_Scan($id)');
   }
   protected function RegisterTimer($ident, $interval, $script) {
     $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
@@ -26,8 +26,8 @@ class BTPClient extends IPSModule {
     }
     if (!$id) {
       $id = IPS_CreateEvent(0);
-      IPS_SetEventTrigger($eid, 1, $this->GetIDForIdent('id_source_string')); //Bei Änderung von der gewählten Variable 
-      IPS_SetEventActive($eid, true);             //Ereignis aktivieren
+      IPS_SetEventTrigger($id, 1, $this->GetIDForIdent('id_source_string')); //Bei Änderung von der gewählten Variable 
+      IPS_SetEventActive($id, true);             //Ereignis aktivieren
       IPS_SetParent($id, $this->InstanceID);
       IPS_SetIdent($id, $ident);
     }
