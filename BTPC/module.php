@@ -9,7 +9,7 @@ class BTPClient extends IPSModule {
     parent::ApplyChanges();
 	  
     //$this->RegisterPropertyInteger('ScanInterval', 30);
-    $this->RegisterPropertyInteger('idSourceString', 1);	  
+    $this->RegisterPropertyInteger('idSourceString', 0);	  
     $stateId = $this->RegisterVariableBoolean('STATE', 'Zustand', '~Presence', 1);
     $presentId = $this->RegisterVariableInteger('PRESENT_SINCE', 'Anwesend seit', '~UnixTimestamp', 3);
     $absentId = $this->RegisterVariableInteger('ABSENT_SINCE', 'Abwesend seit', '~UnixTimestamp', 3);
@@ -18,7 +18,7 @@ class BTPClient extends IPSModule {
     IPS_SetIcon($this->GetIDForIdent('NAME'), 'Keyboard');
     IPS_SetIcon($this->GetIDForIdent('PRESENT_SINCE'), 'Clock');
     IPS_SetIcon($this->GetIDForIdent('ABSENT_SINCE'), 'Clock');
-    if($this->GetIDForIdent('idSourceString')!=1){  
+    if($this->ReadPropertyInteger('idSourceString')!=0){  
     	$this->RegisterTimer('OnStringChange', 0, 'BTPC_Scan($id)');
     }
   }
