@@ -1,6 +1,6 @@
 
   "elements": [
-    { "name": "id_source_string", "type": "SelectVariable", "caption": "id_source_string" },
+    { "name": "idSourceString", "type": "SelectVariable", "caption": "id_source_string" },
   ],
   "actions": [
     { "type": "Button", "label": "String lesen", "onClick": "print_r(BTPC_Scan($id));" }
