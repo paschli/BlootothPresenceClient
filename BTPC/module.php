@@ -111,21 +111,37 @@ class BTPClient extends IPSModule {
         IPS_SetHidden($this->GetIDForIdent('PRESENT_SINCE'), !$state);
         IPS_SetHidden($this->GetIDForIdent('ABSENT_SINCE'), $state);
 	*/
-	IPS_LogMessage('BTPClient',"Suche Zustand in".$UserInstID);
-	$id_state=IPS_GetVariableIDByName('Zustand', $inst_id); 
-	IPS_LogMessage('BTPClient',"Gefunden =".$id_state);
+	IPS_LogMessage('BTPClient',"Suche Zustand in ID: ".$UserInstID);
+	$id_state=@IPS_GetVariableIDByName('Zustand', $UserInstID); 
+	if($id_state === false){
+		IPS_LogMessage('BTPClient',"Fehler : Variable Zustand nicht gefunden!");
+		exit;
+	}
+	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_state);
 	$lastState = GetValueBoolean($id_state);
         SetValueBoolean($id_state, $state);
-	IPS_LogMessage('BTPClient',"Suche Name_Device in".$UserInstID);
-	$id_name=IPS_GetVariableIDByName('Name_Device', $inst_id);  
-	IPS_LogMessage('BTPClient',"Gefunden =".$id_name);
+	IPS_LogMessage('BTPClient',"Suche Name_Device in ID: ".$UserInstID);
+	$id_name=@IPS_GetVariableIDByName('Name_Device', $UserInstID);
+	if($id_name === false){
+		IPS_LogMessage('BTPClient',"Fehler : Variable Name_Device nicht gefunden!");
+		exit;
+	}
+	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_name);
         if ($state) SetValueString($id_name, $name);
-	IPS_LogMessage('BTPClient',"Suche Abwesend seit in".$UserInstID);
-	$id_anw=IPS_GetVariableIDByName('Abwesend seit', $inst_id);
-	IPS_LogMessage('BTPClient',"Gefunden =".$id_anw);
-	IPS_LogMessage('BTPClient',"Suche Anwesend seit in".$UserInstID);
-	$id_abw=IPS_GetVariableIDByName('Anwesend seit', $inst_id);
-	IPS_LogMessage('BTPClient',"Gefunden =".$id_abw);
+	IPS_LogMessage('BTPClient',"Suche Abwesend seit in ID: ".$UserInstID);
+	$id_anw=@IPS_GetVariableIDByName('Abwesend seit', $UserInstID);
+	if($id_name === false){
+		IPS_LogMessage('BTPClient',"Fehler : Variable Abwesend seit nicht gefunden!");
+		exit;
+	}    
+	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_anw);
+	IPS_LogMessage('BTPClient',"Suche Anwesend seit in ID: ".$UserInstID);
+	$id_abw=@IPS_GetVariableIDByName('Anwesend seit', $UserInstID);
+	if($id_name === false){
+		IPS_LogMessage('BTPClient',"Fehler : Variable Anwesend seit nicht gefunden!");
+		exit;
+	} 
+	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_abw);
         if ($lastState != $state) {
           if ($state) SetValueInteger($id_anw, $anw);
           if (!$state) SetValueInteger($id_abw, $abw);
