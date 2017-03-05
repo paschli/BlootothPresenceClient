@@ -128,15 +128,15 @@ class BTPClient extends IPSModule {
 	}
 	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_name);
         if ($state) SetValueString($id_name, $name);
-	IPS_LogMessage('BTPClient',"Suche Abwesend seit in ID: ".$UserInstID);
-	$id_anw=@IPS_GetVariableIDByName('Abwesend seit', $UserInstID);
+	IPS_LogMessage('BTPClient',"Suche Anwesend seit in ID: ".$UserInstID);
+	$id_anw=@IPS_GetVariableIDByName('Anwesend seit', $UserInstID);
 	if($id_name === false){
 		IPS_LogMessage('BTPClient',"Fehler : Variable Abwesend seit nicht gefunden!");
 		exit;
 	}    
 	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_anw);
-	IPS_LogMessage('BTPClient',"Suche Anwesend seit in ID: ".$UserInstID);
-	$id_abw=@IPS_GetVariableIDByName('Anwesend seit', $UserInstID);
+	IPS_LogMessage('BTPClient',"Suche Abwesend seit in ID: ".$UserInstID);
+	$id_abw=@IPS_GetVariableIDByName('Abwesend seit', $UserInstID);
 	if($id_name === false){
 		IPS_LogMessage('BTPClient',"Fehler : Variable Anwesend seit nicht gefunden!");
 		exit;
