@@ -44,7 +44,6 @@ class BTPClient extends IPSModule {
    */
   public function Scan() {
     if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
-      //$mac = $this->ReadPropertyString('Mac');
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
       IPS_LogMessage('BTPClient',"String eingelesen");
       $array=explode(";",$string);
@@ -54,8 +53,6 @@ class BTPClient extends IPSModule {
       $tag=$subarray[0];
       $value=$subarray[1];
       IPS_LogMessage('BTPClient',"Tag:".$tag." Value:".$value);
-      //echo("tag:".$tag.chr(13));
-      //echo("value:".$value.chr(13));
       switch($tag){
  	      case "User" : $user = $value; break;
 	      case "Name": $name = $value; break;
