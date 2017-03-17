@@ -72,16 +72,13 @@ class BTPClient extends IPSModule {
 	      case "Zustand": $state = $value; break;
 	      case "Anwesend seit": $anw = $value; break;
 	      case "Abwesend seit": $abw = $value; break;
-        default : IPS_LogMessage('BTPClient',"Tag=".$tag." nicht erkannt!"); 
+              default : IPS_LogMessage('BTPClient',"Tag=".$tag." nicht erkannt!");
+                        IPS_SemaphoreLeave('BTPCScan');
+                        exit();
  	      }
        }
       }
-      /*if (preg_match('/^(?:[0-9A-F]{2}[:]?){6}$/i', $mac)) {
-        $lastState = GetValueBoolean($this->GetIDForIdent('STATE'));
-        $search = trim(shell_exec("hcitool name $mac"));
-        $state = ($search != '');
-        }*/
-	//User Namen prüfen, ob Instance schon angelegt ist
+      
 	$inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz 
 	$parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
 	$inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
@@ -100,17 +97,6 @@ class BTPClient extends IPSModule {
     	 IPS_LogMessage('BTPClient',"Instanz mit Namen: ".$user." gefunden! ID:".$UserInstID);
 	 
 	}
-        /*$lastState = GetValueBoolean($this->GetIDForIdent('STATE'));
-        SetValueBoolean($this->GetIDForIdent('STATE'), $state);
-        if ($state) SetValueString($this->GetIDForIdent('NAME'), $name);
-        if ($lastState != $state) {
-          if ($state) SetValueInteger($this->GetIDForIdent('PRESENT_SINCE'), $anw);
-          if (!$state) SetValueInteger($this->GetIDForIdent('ABSENT_SINCE'), $abw);
-        
-      
-        IPS_SetHidden($this->GetIDForIdent('PRESENT_SINCE'), !$state);
-        IPS_SetHidden($this->GetIDForIdent('ABSENT_SINCE'), $state);
-	*/
 	IPS_LogMessage('BTPClient',"Suche Zustand in ID: ".$UserInstID);
 	$id_state=@IPS_GetVariableIDByName('Zustand', $UserInstID); 
 	if($id_state === false){
