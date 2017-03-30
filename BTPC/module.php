@@ -106,7 +106,7 @@ class BTPClient extends IPSModule {
 	if($id_name === false){
 		IPS_LogMessage('BTPClient',"Fehler : Variable Abwesend seit nicht gefunden!");
 		exit;
-	}    
+	}  
 	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_anw);
 	IPS_LogMessage('BTPClient',"Suche Abwesend seit in ID: ".$UserInstID);
 	$id_abw=@IPS_GetVariableIDByName('Abwesend seit', $UserInstID);
