@@ -56,10 +56,11 @@ class BTPClient extends IPSModule {
             IPS_LogMessage('BTPClient',"Tag:".$tag." Value:".$value);
             switch($tag){
                     case "User" : $user = $value; break;
-                    case "Name": $name = $value; break;
+                    //case "Name": $name = $value; break;
                     case "Zustand": $state = $value; break;
-                    case "Anwesend seit": $anw = $value; break;
-                    case "Abwesend seit": $abw = $value; break;
+                    //case "Anwesend seit": $anw = $value; break;
+                    //case "Abwesend seit": $abw = $value; break;
+                    case "Zeit": $time_stamp = $value; break;
                     default : IPS_LogMessage('BTPClient',"Tag=".$tag." nicht erkannt!");
                               IPS_SemaphoreLeave('BTPCScan');
                               exit();
@@ -94,14 +95,15 @@ class BTPClient extends IPSModule {
 	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_state);
 	$lastState = GetValueBoolean($id_state);
         SetValueBoolean($id_state, $state);
-	IPS_LogMessage('BTPClient',"Suche Name_Device in ID: ".$UserInstID);
+	/*IPS_LogMessage('BTPClient',"Suche Name_Device in ID: ".$UserInstID);
 	$id_name=@IPS_GetVariableIDByName('Name_Device', $UserInstID);
 	if($id_name === false){
 		IPS_LogMessage('BTPClient',"Fehler : Variable Name_Device nicht gefunden!");
 		exit;
 	}
 	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_name);
-        if ($state) SetValueString($id_name, $name);
+        if ($state) SetValueString($id_name, $name); 
+        */
 	IPS_LogMessage('BTPClient',"Suche Anwesend seit in ID: ".$UserInstID);
 	$id_anw=@IPS_GetVariableIDByName('Anwesend seit', $UserInstID);
 	if($id_name === false){
@@ -118,8 +120,8 @@ class BTPClient extends IPSModule {
 	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_abw);
         //if ($lastState != $state) 
             {
-          if ($state) SetValueInteger($id_anw, $anw);
-          if (!$state) SetValueInteger($id_abw, $abw);
+          if ($state) SetValueInteger($id_anw, $time_stamp);
+          if (!$state) SetValueInteger($id_abw, $time_stamp);
           IPS_SetHidden($id_anw, !$state);
           IPS_SetHidden($id_abw, $state);
         }
