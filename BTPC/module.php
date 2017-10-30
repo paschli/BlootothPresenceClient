@@ -3,11 +3,12 @@ class BTPClient extends IPSModule {
   public function Create() {
     parent::Create();
     $this->RegisterPropertyInteger('idSourceString', 0);
+    //$this->RegisterPropertyInteger('idSourceString', 0);
     
   }
   public function ApplyChanges() {
     parent::ApplyChanges();
-    $this->RegisterPropertyInteger('idSourceString', 0);	  
+    	  
     $stateId = $this->RegisterVariableBoolean('STATE', 'Zustand', '~Presence', 1);
     $presentId = $this->RegisterVariableInteger('PRESENT_SINCE', 'Anwesend seit', '~UnixTimestamp', 3);
     $absentId = $this->RegisterVariableInteger('ABSENT_SINCE', 'Abwesend seit', '~UnixTimestamp', 3);
