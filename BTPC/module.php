@@ -48,22 +48,22 @@ class BTPClient extends IPSModule {
       IPS_LogMessage('BTPClient',"String eingelesen");
       $array=explode(";",$string);
       foreach($array as $item){
-      if($item!=""){
-      $subarray=explode("=",$item);
-      $tag=$subarray[0];
-      $value=$subarray[1];
-      IPS_LogMessage('BTPClient',"Tag:".$tag." Value:".$value);
-      switch($tag){
- 	      case "User" : $user = $value; break;
-	      case "Name": $name = $value; break;
-	      case "Zustand": $state = $value; break;
-	      case "Anwesend seit": $anw = $value; break;
-	      case "Abwesend seit": $abw = $value; break;
-              default : IPS_LogMessage('BTPClient',"Tag=".$tag." nicht erkannt!");
-                        IPS_SemaphoreLeave('BTPCScan');
-                        exit();
- 	      }
-       }
+        if($item!=""){
+            $subarray=explode("=",$item);
+            $tag=$subarray[0];
+            $value=$subarray[1];
+            IPS_LogMessage('BTPClient',"Tag:".$tag." Value:".$value);
+            switch($tag){
+                    case "User" : $user = $value; break;
+                    case "Name": $name = $value; break;
+                    case "Zustand": $state = $value; break;
+                    case "Anwesend seit": $anw = $value; break;
+                    case "Abwesend seit": $abw = $value; break;
+                    default : IPS_LogMessage('BTPClient',"Tag=".$tag." nicht erkannt!");
+                              IPS_SemaphoreLeave('BTPCScan');
+                              exit();
+                    }
+         }
       }
       
 	$inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz 
@@ -115,16 +115,16 @@ class BTPClient extends IPSModule {
 		exit;
 	} 
 	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_abw);
-        if ($lastState != $state) {
+        //if ($lastState != $state) 
+            {
           if ($state) SetValueInteger($id_anw, $anw);
           if (!$state) SetValueInteger($id_abw, $abw);
-        
-      
-        IPS_SetHidden($id_anw, !$state);
-        IPS_SetHidden($id_abw, $state);
-      }
-      IPS_SemaphoreLeave('BTPCScan');
-    } else {
+          IPS_SetHidden($id_anw, !$state);
+          IPS_SetHidden($id_abw, $state);
+        }
+        IPS_SemaphoreLeave('BTPCScan');
+    } 
+    else {
       IPS_LogMessage('BTPClient', 'Semaphore Timeout');
     }
   }
