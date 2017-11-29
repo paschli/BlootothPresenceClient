@@ -18,13 +18,14 @@ class BTPClient extends IPSModule {
     IPS_SetIcon($this->GetIDForIdent('PRESENT_SINCE'), 'Clock');
     IPS_SetIcon($this->GetIDForIdent('ABSENT_SINCE'), 'Clock');
     if($this->ReadPropertyInteger('idSourceString')!=0){  
-    	$this->RegisterTimer('OnStringChange', 0, 'BTPC_Scan($id)');
+    	$this->RegisterEvent('OnStringChange', 0, 'BTPC_Scan($id)');
     }
   }
-  protected function RegisterTimer($ident, $interval, $script) {
+  protected function RegisterEvent($ident, $interval, $script) {
     $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
     if ($id && IPS_GetEvent($id)['EventType'] <> 1) {
       IPS_DeleteEvent($id);
+      IPS_LogMessage('BTPClient',"Event deleted");
       $id = 0;
     }
     if (!$id) {
