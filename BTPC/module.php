@@ -54,7 +54,7 @@ class BTPClient extends IPSModule {
             $subarray=explode("=",$item);
             $tag=$subarray[0];
             $value=$subarray[1];
-            IPS_LogMessage('BTPClient',"Tag:".$tag." Value:".$value);
+            IPS_LogMessage('BTPClient',"Tag:".$tag." / Value:".$value);
             switch($tag){
                     case "User" : $user = $value; break;
                     //case "Name": $name = $value; break;
@@ -72,7 +72,7 @@ class BTPClient extends IPSModule {
 	$inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz 
 	$parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
 	$inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
-	$inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz lesen
+	$inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
 	IPS_LogMessage('BTPClient',"Objekt Name:".$inst_name);
 	$UserInstID = @IPS_GetInstanceIDByName($user, $parent_id); // Instanz mit Namen suchen, der im "USER"-Eintrag steht
 	if ($UserInstID === false){				// Instanz nicht gefunden
@@ -85,8 +85,13 @@ class BTPClient extends IPSModule {
 	}
 	else{							// instanz gefunden
     	 IPS_LogMessage('BTPClient',"Instanz mit Namen: ".$user." gefunden! ID:".$UserInstID);
-	 
+	 if($user!=$inst_name){
+             IPS_LogMessage('BTPClient',"Event nicht von diesem User (".$user.")");
+             IPS_SemaphoreLeave('BTPCScan');
+             exit();
+         }
 	}
+        
 	IPS_LogMessage('BTPClient',"Suche Zustand in ID: ".$UserInstID);
 	$id_state=@IPS_GetVariableIDByName('Zustand', $UserInstID); 
 	if($id_state === false){
