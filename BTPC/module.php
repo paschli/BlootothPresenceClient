@@ -8,7 +8,6 @@ class BTPClient extends IPSModule {
   }
   public function ApplyChanges() {
     parent::ApplyChanges();
-    	  
     $stateId = $this->RegisterVariableBoolean('STATE', 'Zustand', '~Presence', 1);
     $presentId = $this->RegisterVariableInteger('PRESENT_SINCE', 'Anwesend seit', '~UnixTimestamp', 3);
     $absentId = $this->RegisterVariableInteger('ABSENT_SINCE', 'Abwesend seit', '~UnixTimestamp', 3);
