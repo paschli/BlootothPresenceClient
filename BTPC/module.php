@@ -47,6 +47,7 @@ class BTPClient extends IPSModule {
   public function Scan() {
     if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
+      IPS_LogMessage('BTPClient',"_______________BTPClient-Start____________");
       IPS_LogMessage('BTPClient',"String eingelesen");
       $array=explode(";",$string);
       foreach($array as $item){
@@ -86,7 +87,8 @@ class BTPClient extends IPSModule {
 	else{							// instanz gefunden
     	 IPS_LogMessage('BTPClient',"Instanz mit Namen: ".$user." gefunden! ID:".$UserInstID);
 	 if($user!=$inst_name){
-             IPS_LogMessage('BTPClient',"Event nicht von diesem User (".$user.")");
+             IPS_LogMessage('BTPClient',"Event nicht von diesem User (".$user.") -> Abbruch");
+             IPS_LogMessage('BTPClient',"_______________BTPClient-Ende____________");
              IPS_SemaphoreLeave('BTPCScan');
              exit();
          }
@@ -131,6 +133,7 @@ class BTPClient extends IPSModule {
           IPS_SetHidden($id_anw, !$state);
           IPS_SetHidden($id_abw, $state);
         }
+        IPS_LogMessage('BTPClient',"_______________BTPClient-Ende____________");
         IPS_SemaphoreLeave('BTPCScan');
     } 
     else {
