@@ -14,7 +14,7 @@ class BTPClient extends IPSModule {
     $absentId = $this->RegisterVariableInteger('ABSENT_SINCE', 'Abwesend seit', '~UnixTimestamp', 3);
     $//nameId = $this->RegisterVariableString('NAME', 'Name_Device', '', 2);
     IPS_SetIcon($this->GetIDForIdent('STATE'), 'Motion');
-    IPS_SetIcon($this->GetIDForIdent('NAME'), 'Keyboard');
+    I//PS_SetIcon($this->GetIDForIdent('NAME'), 'Keyboard');
     IPS_SetIcon($this->GetIDForIdent('PRESENT_SINCE'), 'Clock');
     IPS_SetIcon($this->GetIDForIdent('ABSENT_SINCE'), 'Clock');
     if($this->ReadPropertyInteger('idSourceString')!=0){  
