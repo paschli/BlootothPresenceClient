@@ -46,12 +46,13 @@ class BTPClient extends IPSModule {
       IPS_LogMessage('BTPClient',"_______________BTPClient-Start____________");
       IPS_LogMessage('BTPClient',"String eingelesen");
       $array=explode(";",$string);
+      IPS_LogMessage('BTPClient',"zerlege String:");
       foreach($array as $item){
         if($item!=""){
             $subarray=explode("=",$item);
             $tag=$subarray[0];
             $value=$subarray[1];
-            IPS_LogMessage('BTPClient',"zerlege String:");
+            
             IPS_LogMessage('BTPClient',"Tag:".$tag." / Value:".$value);
             switch($tag){
                     case "User" : $user = boolval($value); break;
