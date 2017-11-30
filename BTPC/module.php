@@ -102,7 +102,7 @@ class BTPClient extends IPSModule {
 	}
 	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_state);
 	$lastState = GetValueBoolean($id_state);
-        SetValueBoolean($id_state, $state);
+        
 	/*IPS_LogMessage('BTPClient',"Suche Name_Device in ID: ".$UserInstID);
 	$id_name=@IPS_GetVariableIDByName('Name_Device', $UserInstID);
 	if($id_name === false){
@@ -112,26 +112,34 @@ class BTPClient extends IPSModule {
 	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_name);
         if ($state) SetValueString($id_name, $name); 
         */
-	IPS_LogMessage('BTPClient',"Suche Anwesend seit in ID: ".$UserInstID);
+	//IPS_LogMessage('BTPClient',"Suche Anwesend seit in ID: ".$UserInstID);
 	$id_anw=@IPS_GetVariableIDByName('Anwesend seit', $UserInstID);
 	if($id_anw === false){
 		IPS_LogMessage('BTPClient',"Fehler : Variable (Anwesend seit) nicht gefunden!");
 		exit;
 	}  
-	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_anw);
-	IPS_LogMessage('BTPClient',"Suche Abwesend seit in ID: ".$UserInstID);
+	//IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_anw);
+	//IPS_LogMessage('BTPClient',"Suche Abwesend seit in ID: ".$UserInstID);
 	$id_abw=@IPS_GetVariableIDByName('Abwesend seit', $UserInstID);
 	if($id_abw === false){
 		IPS_LogMessage('BTPClient',"Fehler : Variable (Abwesend seit) nicht gefunden!");
 		exit;
 	} 
-	IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_abw);
+	//IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_abw);
         //if ($lastState != $state) 
-            {
-          if ($state) SetValueInteger($id_anw, $time_stamp);
-          if (!$state) SetValueInteger($id_abw, $time_stamp);
-          IPS_SetHidden($id_anw, !$state);
-          IPS_SetHidden($id_abw, $state);
+        //{
+        $anw_alt= GetValueInteger($id_anw);
+        $abw_alt= GetValueInteger($id_abw);
+        if(($time_stamp>$anw_alt)&&($time_stamp>$abw_alt)){
+            if ($state) SetValueInteger($id_anw, $time_stamp);
+            if (!$state) SetValueInteger($id_abw, $time_stamp);
+            IPS_SetHidden($id_anw, !$state);
+            IPS_SetHidden($id_abw, $state);
+            SetValueBoolean($id_state, $state);
+            IPS_LogMessage('BTPClient',"Eintrag aktualisiert");
+        }
+        else {
+            IPS_LogMessage('BTPClient',"Event ist älter als vorhande Zeitstempel -> keine Aktualisierung erforderlich");
         }
         IPS_LogMessage('BTPClient',"_______________BTPClient-Ende____________");
         IPS_SemaphoreLeave('BTPCScan');
