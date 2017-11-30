@@ -59,7 +59,7 @@ class BTPClient extends IPSModule {
             
             IPS_LogMessage('BTPClient',"Tag:".$tag." / Value:".$value);
             switch($tag){
-                    case "User" : $user = boolval($value); break;
+                    case "User" : $user = $value; break;
                     //case "Name": $name = $value; break;
                     case "Zustand": $state = boolval($value); break;
                     //case "Anwesend seit": $anw = $value; break;
