@@ -43,7 +43,11 @@ class BTPClient extends IPSModule {
   public function Scan() {
     if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
-      IPS_LogMessage('BTPClient',"_______________BTPClient-Start____________");
+      $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz 
+      $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
+      $inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
+      $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
+      IPS_LogMessage('BTPClient',"_______________BTPClient-".$inst_name."____________");
       IPS_LogMessage('BTPClient',"String eingelesen");
       $array=explode(";",$string);
       IPS_LogMessage('BTPClient',"zerlege String:");
@@ -68,10 +72,7 @@ class BTPClient extends IPSModule {
          }
       }
         IPS_LogMessage('BTPClient',"String OK -> Auswertung:");
-	$inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz 
-	$parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
-	$inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
-	$inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
+	
 	//IPS_LogMessage('BTPClient',"Skript wird ausgeführt in: ".$inst_name);
 	$UserInstID = @IPS_GetInstanceIDByName($user, $parent_id); // Instanz mit Namen suchen, der im "USER"-Eintrag steht
 	if ($UserInstID === false){				// Instanz nicht gefunden
