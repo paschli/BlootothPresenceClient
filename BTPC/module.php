@@ -3,6 +3,7 @@ class BTPClient extends IPSModule {
   public function Create() {
     parent::Create();
     $this->RegisterPropertyInteger('idSourceString', 0); //zu überwachender String mit IFTTT Nachricht 
+    $this->RegisterPropertyInteger('idBluetoothInfo', 0); //zu überwachender Boolean mit Info zum Mac-Scan 
   }
   public function ApplyChanges() {
     parent::ApplyChanges();
