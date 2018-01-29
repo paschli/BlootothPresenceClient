@@ -1,6 +1,7 @@
 {
   "elements": [
-    { "name": "idSourceString", "type": "SelectVariable", "caption": "idSourceString" }
+    { "name": "idSourceString", "type": "SelectVariable", "caption": "idSourceString" },
+    { "name": "idBluetoothInfo", "type": "SelectVariable", "caption": "idBluetoothInfo" }
   ],
   "actions": [
     { "type": "Button", "label": "String lesen", "onClick": "print_r(BTPC_Scan($id));" }
