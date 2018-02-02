@@ -50,7 +50,7 @@ class BTPClient extends IPSModule {
   /*
    * Sucht nach dem Bluetoothdevice
    */
-  public function Scan(int $trig) {
+  public function Scan($trig) {
     if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
       $bt_info= GetValueBoolean($this->GetIDForIdent('BLT_STATE'));
