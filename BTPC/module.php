@@ -19,7 +19,7 @@ class BTPClient extends IPSModule {
     	$this->RegisterEvent('OnStringChange', 0, 'BTPC_Scan($id,1)');
     }
     if($this->ReadPropertyInteger('idBluetoothInfo')!=0){  
-    	$this->RegisterEvent('OnStringChange', 0, 'BTPC_Scan($id,2)');
+    	$this->RegisterEvent('OnBloutoothChange', 0, 'BTPC_Scan($id,2)');
     }
   }
   protected function RegisterEvent($ident, $interval, $script) {
