@@ -9,9 +9,11 @@ class BTPClient extends IPSModule {
   }
   public function ApplyChanges() {
     parent::ApplyChanges();
-    $stateId = $this->RegisterVariableInteger('STATE', 'Zustand', 'Presence_BTPC', 1);//Zustand Anwesenheit
-    $presentId = $this->RegisterVariableInteger('PRESENT_SINCE', 'Anwesend seit', '~UnixTimestamp', 3);
-    $absentId = $this->RegisterVariableInteger('ABSENT_SINCE', 'Abwesend seit', '~UnixTimestamp', 3);
+    $stateId = $this->RegisterVariableInteger('STATE', 'Zustand', '', 1);//Zustand Anwesenheit
+    $IFTTTstateId = $this->RegisterVariableBoolean('IFTTT_STATE', 'IFTTT','', 2);//Zustand IFTTT
+    $BLTstateId = $this->RegisterVariableBoolean('BLT_STATE', 'BLT','', 3);//Zustand Bluetooth
+    $presentId = $this->RegisterVariableInteger('PRESENT_SINCE', 'Anwesend seit', '~UnixTimestamp', 4);
+    $absentId = $this->RegisterVariableInteger('ABSENT_SINCE', 'Abwesend seit', '~UnixTimestamp', 5);
     IPS_SetIcon($this->GetIDForIdent('STATE'), 'Motion'); 
     IPS_SetIcon($this->GetIDForIdent('PRESENT_SINCE'), 'Clock');
     IPS_SetIcon($this->GetIDForIdent('ABSENT_SINCE'), 'Clock');
@@ -51,7 +53,8 @@ class BTPClient extends IPSModule {
   public function Scan(int $var) {
     if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
-      $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
+      $bt_info= GetValueBoolean($this->$BLTstateId);
+      $ifttt_info=GetValueBoolean($this->$IFTTTstateId);
       $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz
       $aktState= GetValueInteger($inst_id);
       $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
@@ -143,7 +146,9 @@ class BTPClient extends IPSModule {
       }
       elseif ($var==2) {
         $aktState= GetValueInteger($this->GetIDforIdent('STATE'));
-        
+        $ifttt_State=(intval($bt_info));
+        $changeState=200+10*$state+$bt_State;
+        SetValueInteger($inst_id, $this->FSM_Zustand($aktState, $changeState));
           
       }
       
