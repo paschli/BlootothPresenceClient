@@ -53,8 +53,8 @@ class BTPClient extends IPSModule {
   public function Scan(int $var) {
     if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
-      $bt_info= GetValueBoolean($this->$BLTstateId);
-      $ifttt_info=GetValueBoolean($this->$IFTTTstateId);
+      $bt_info= GetValueBoolean($this->GetIDForIdent('BLT_STATE'));
+      $ifttt_info=GetValueBoolean($this->GetIDForIdent('IFTTT_STATE'));
       $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz
       $aktState= GetValueInteger($inst_id);
       $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
