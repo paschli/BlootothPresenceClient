@@ -4,6 +4,6 @@
     { "name": "idBluetoothInfo", "type": "SelectVariable", "caption": "idBluetoothInfo" }
   ],
   "actions": [
-    { "type": "Button", "label": "String lesen", "onClick": "print_r(BTPC_Scan($id,1,1));" }
+    { "type": "Button", "label": "String lesen", "onClick": "print_r(BTPC_Scan($id,1));" }
   ]
 }
