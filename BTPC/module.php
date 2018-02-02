@@ -4,15 +4,15 @@ class BTPClient extends IPSModule {
     parent::Create();
     $this->RegisterPropertyInteger('idSourceString', 0); //zu überwachender String mit IFTTT Nachricht 
     $this->RegisterPropertyInteger('idBluetoothInfo', 0); //zu überwachender Boolean mit Info zum Mac-Scan 
+    $this->RegisterPropertyInteger('aktState', 0);//aktueller Status
+    
   }
   public function ApplyChanges() {
     parent::ApplyChanges();
     $stateId = $this->RegisterVariableInteger('STATE', 'Zustand', 'Presence_BTPC', 1);//Zustand Anwesenheit
     $presentId = $this->RegisterVariableInteger('PRESENT_SINCE', 'Anwesend seit', '~UnixTimestamp', 3);
     $absentId = $this->RegisterVariableInteger('ABSENT_SINCE', 'Abwesend seit', '~UnixTimestamp', 3);
-    //$nameId = $this->RegisterVariableString('NAME', 'Name_Device', '', 2);
     IPS_SetIcon($this->GetIDForIdent('STATE'), 'Motion'); 
-    //IPS_SetIcon($this->GetIDForIdent('NAME'), 'Keyboard');
     IPS_SetIcon($this->GetIDForIdent('PRESENT_SINCE'), 'Clock');
     IPS_SetIcon($this->GetIDForIdent('ABSENT_SINCE'), 'Clock');
     if($this->ReadPropertyInteger('idSourceString')!=0){  
@@ -53,7 +53,7 @@ class BTPClient extends IPSModule {
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
       $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
       $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz
-      
+      $aktState= $this->ReadPropertyInteger('aktState');
       $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
       $inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
       $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
@@ -72,7 +72,8 @@ class BTPClient extends IPSModule {
               IPS_LogMessage('BTPClient',"Tag:".$tag." / Value:".$value);
               switch($tag){
                       case "User" : $user = $value; break;
-                      case "Zustand": $state = boolval($value); break;
+                      //case "Zustand": $state = boolval($value); break;
+                      case "Zustand": $state = $value; break;
                       case "Zeit": $time_stamp = intval($value); break;
                       default : IPS_LogMessage('BTPClient',"Tag=".$tag." nicht erkannt!");
                                 IPS_SemaphoreLeave('BTPCScan');
@@ -109,7 +110,7 @@ class BTPClient extends IPSModule {
                   exit;
           }
           IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_state);
-          $aktState = GetValueInteger($id_state);
+          //$aktState = GetValueInteger($id_state);
 
           
           $id_anw=@IPS_GetVariableIDByName('Anwesend seit', $UserInstID);
@@ -124,7 +125,11 @@ class BTPClient extends IPSModule {
           } 
           $anw_alt= GetValueInteger($id_anw);
           $abw_alt= GetValueInteger($id_abw);
-          if(($time_stamp>$anw_alt)&&($time_stamp>$abw_alt)){
+          $bt_State=(intval($bt_info));
+          $changeState=200+10*$state+$bt_State;
+          $aktState=$this->FSM_Zustand($aktState, $changeState);
+          
+          /*if(($time_stamp>$anw_alt)&&($time_stamp>$abw_alt)){
               if ($state) SetValueInteger($id_anw, $time_stamp);
               if (!$state) SetValueInteger($id_abw, $time_stamp);
               IPS_SetHidden($id_anw, !$state);
@@ -134,7 +139,7 @@ class BTPClient extends IPSModule {
           }
           else {
               IPS_LogMessage('BTPClient',"Event ist älter als vorhande Zeitstempel -> keine Aktualisierung erforderlich");
-          }
+          }*/
       }
       elseif ($func==2) {
         $aktState= GetValueInteger($this->GetIDforIdent('STATE'));
@@ -188,5 +193,6 @@ class BTPClient extends IPSModule {
               else if($changeState==211) $newState=2;
               break;
       }
+      return $newState;
   }
 }
