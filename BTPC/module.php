@@ -127,7 +127,7 @@ class BTPClient extends IPSModule {
           $abw_alt= GetValueInteger($id_abw);
           $bt_State=(intval($bt_info));
           $changeState=200+10*$state+$bt_State;
-          $aktState=$this->FSM_Zustand($aktState, $changeState);
+          SetValueInteger($inst_id, $this->FSM_Zustand($aktState, $changeState));
           
           /*if(($time_stamp>$anw_alt)&&($time_stamp>$abw_alt)){
               if ($state) SetValueInteger($id_anw, $time_stamp);
