@@ -16,13 +16,13 @@ class BTPClient extends IPSModule {
     IPS_SetIcon($this->GetIDForIdent('PRESENT_SINCE'), 'Clock');
     IPS_SetIcon($this->GetIDForIdent('ABSENT_SINCE'), 'Clock');
     if($this->ReadPropertyInteger('idSourceString')!=0){  
-    	$this->RegisterEvent('OnStringChange', 0, 'BTPC_Scan($id,1)');
+    	$this->RegisterEvent('OnStringChange', 0, 'BTPC_Scan($id,1)','idSourceString');
     }
     if($this->ReadPropertyInteger('idBluetoothInfo')!=0){  
-    	$this->RegisterEvent('OnBloutoothChange', 0, 'BTPC_Scan($id,2)');
+    	$this->RegisterEvent('OnBloutoothChange', 0, 'BTPC_Scan($id,2)','idBluetoothInfo');
     }
   }
-  protected function RegisterEvent($ident, $interval, $script) {
+  protected function RegisterEvent($ident, $interval, $script, $trigger) {
     $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
     if ($id && IPS_GetEvent($id)['EventType'] <> 1) {
       IPS_DeleteEvent($id);
@@ -31,7 +31,7 @@ class BTPClient extends IPSModule {
     }
     if (!$id) {
       $id = IPS_CreateEvent(0);
-      IPS_SetEventTrigger($id, 1, $this->ReadPropertyInteger('idSourceString')); //Bei Änderung von der gewählten Variable 
+      IPS_SetEventTrigger($id, 1, $this->ReadPropertyInteger($trigger)); //Bei Änderung von der gewählten Variable 
       IPS_SetEventActive($id, true);             //Ereignis aktivieren
       IPS_SetParent($id, $this->InstanceID);
       IPS_SetIdent($id, $ident);
