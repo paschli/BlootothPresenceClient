@@ -53,7 +53,7 @@ class BTPClient extends IPSModule {
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
       $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
       $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz
-      $aktState= $this->ReadPropertyInteger('aktState');
+      $aktState= GetValueInteger($inst_id);
       $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
       $inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
       $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
@@ -143,6 +143,7 @@ class BTPClient extends IPSModule {
       }
       elseif ($var==2) {
         $aktState= GetValueInteger($this->GetIDforIdent('STATE'));
+        
           
       }
       
