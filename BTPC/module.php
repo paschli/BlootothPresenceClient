@@ -50,7 +50,7 @@ class BTPClient extends IPSModule {
   /*
    * Sucht nach dem Bluetoothdevice
    */
-  public function Scan(int $var) {
+  public function Scan(int $trig) {
     if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
       $bt_info= GetValueBoolean($this->GetIDForIdent('BLT_STATE'));
@@ -61,7 +61,7 @@ class BTPClient extends IPSModule {
       $inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
       $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
       IPS_LogMessage('BTPClient',"_______________BTPClient-".$inst_name."____________");
-      if($var==1)
+      if($trig==1)
       {
         IPS_LogMessage('BTPClient',"String eingelesen");
         $array=explode(";",$string);
@@ -144,7 +144,7 @@ class BTPClient extends IPSModule {
               IPS_LogMessage('BTPClient',"Event ist älter als vorhande Zeitstempel -> keine Aktualisierung erforderlich");
           }*/
       }
-      elseif ($var==2) {
+      elseif ($trig==2) {
         $aktState= GetValueInteger($this->GetIDforIdent('STATE'));
         $ifttt_State=(intval($ifttt_info));
         $bt_State=(intval($bt_info));
