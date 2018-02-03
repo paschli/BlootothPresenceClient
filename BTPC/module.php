@@ -50,7 +50,7 @@ class BTPClient extends IPSModule {
   /*
    * Sucht nach dem Bluetoothdevice
    */
-  public function Scan($param){  
+  public function Scan(int $param){  
     if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
       $bt_info= GetValueBoolean($this->GetIDForIdent('BLT_STATE'));
@@ -162,7 +162,7 @@ class BTPClient extends IPSModule {
     }
   }
   
-  public function FSM_Zustand(int $aktState, int $changeState) {
+  protected function FSM_Zustand(int $aktState, int $changeState) {
       
       //Zustand: 
       //    0 = Abwesend (bt=0 / ifttt=0) 
