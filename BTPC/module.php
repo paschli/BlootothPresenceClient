@@ -162,7 +162,7 @@ class BTPClient extends IPSModule {
     }
   }
   
-  protected function FSM_Zustand(int $aktState, int $changeState) {
+  private function FSM_Zustand(int $aktState, int $changeState) {
       
       //Zustand: 
       //    0 = Abwesend (bt=0 / ifttt=0) 
