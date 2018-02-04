@@ -173,7 +173,7 @@ class BTPClient extends IPSModule {
       $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
       IPS_LogMessage('BTPClient',"_______________BTPClient-".$inst_name."____________");
       
-      if($param==1)
+      if(1)
       {
         IPS_LogMessage('BTPClient',"String eingelesen");
         $array=explode(";",$string);
@@ -256,14 +256,14 @@ class BTPClient extends IPSModule {
               IPS_LogMessage('BTPClient',"Event ist älter als vorhande Zeitstempel -> keine Aktualisierung erforderlich");
           }*/
       }
-      else if ($param==2) {
+      /*else if ($param==2) {
         $aktState= GetValueInteger($this->GetIDforIdent('STATE'));
         $ifttt_State=(intval($ifttt_info));
         $bt_State=(intval($bt_info));
         $changeState=100+10*$bt_State+$ifttt_State;
         SetValueInteger($inst_id, $this->FSM_Zustand($aktState, $changeState));
           
-      }
+      }*/
       
         IPS_LogMessage('BTPClient',"_______________BTPClient-Ende____________");
         IPS_SemaphoreLeave('BTPCScan');
