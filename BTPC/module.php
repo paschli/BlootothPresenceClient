@@ -311,6 +311,7 @@ class BTPClient extends IPSModule {
               if($changeState==100) $newState=0;
               else if($changeState==211) $newState=2;
               break;
+          default : $newState=-1;
       }
       return $newState;
   }
