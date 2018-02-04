@@ -18,10 +18,10 @@ class BTPClient extends IPSModule {
     IPS_SetIcon($this->GetIDForIdent('PRESENT_SINCE'), 'Clock');
     IPS_SetIcon($this->GetIDForIdent('ABSENT_SINCE'), 'Clock');
     if($this->ReadPropertyInteger('idSourceString')!=0){  
-    	$this->RegisterEvent('OnStringChange', 0, 'BTPC_Scan($id,1)','idSourceString');
+    	$this->RegisterEvent('OnStringChange', 0, 'BTPC_Start($id,1)','idSourceString');
     }
     if($this->ReadPropertyInteger('idBluetoothInfo')!=0){  
-    	$this->RegisterEvent('OnBloutoothChange', 0, 'BTPC_Scan($id,2)','idBluetoothInfo');
+    	$this->RegisterEvent('OnBloutoothChange', 0, 'BTPC_Start($id,2)','idBluetoothInfo');
     }
   }
   protected function RegisterEvent($ident, $interval, $script, $trigger) {
@@ -57,7 +57,7 @@ class BTPClient extends IPSModule {
       $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
       IPS_LogMessage('BTPClient',"_______________BTPClient-".$inst_name."____________");
       
-      if($param==1)
+      if($trigger==1)
       {
         IPS_LogMessage('BTPClient',"String eingelesen");
         $array=explode(";",$string);
@@ -140,7 +140,7 @@ class BTPClient extends IPSModule {
               IPS_LogMessage('BTPClient',"Event ist älter als vorhande Zeitstempel -> keine Aktualisierung erforderlich");
           }*/
       }
-      else if ($param==2) {
+      else if ($trigger==2) {
         $aktState= GetValueInteger($this->GetIDforIdent('STATE'));
         $ifttt_State=(intval($ifttt_info));
         $bt_State=(intval($bt_info));
