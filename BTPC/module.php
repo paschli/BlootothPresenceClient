@@ -287,7 +287,7 @@ class BTPClient extends IPSModule {
       //    IFTTT 20x  = IFTTT von 1 nach 0
       //    IFTTT 21x  = IFTTT von 0 nach 1
       //    x = Zustand der jeweils anderen Methode
-      
+      $newState=-2;
       switch ($aktState){
           case 0: 
               if(($changeState==110)||($changeState==111)) $newState=2;
