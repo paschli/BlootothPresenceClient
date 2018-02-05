@@ -235,11 +235,11 @@ class BTPClient extends IPSModule {
     else{ //Variable gefunden 
         if($BLT_Value>-1){//falls der neue Wert > -1 => Updtae der lokalen Variable
             SetValueBoolean($BLT_local_ID, boolval($BLT_Value));//Update
-            IPS_LogMessage('BTPClient'.$func,"Variable: BLT update!");
+            //IPS_LogMessage('BTPClient'.$func,"Variable: BLT update!");
         }
         else{//falls der übergebene Wert = -1 => Wert der lokalen Variable zurückgeben
             $val= GetValueBoolean($BLT_local_ID);
-            IPS_LogMessage('BTPClient'.$func,"Variable: BLT wird zurückgegeben!");
+            //IPS_LogMessage('BTPClient'.$func,"Variable: BLT wird zurückgegeben!");
         }
     }
     $IFTTT_local_ID = @IPS_GetObjectIDByName('IFTTT', $Inst_ID); //lokale Variable mit Namen im Objekt suchen 
@@ -250,11 +250,11 @@ class BTPClient extends IPSModule {
     else{ //Variable gefunden
         if($IFTTT_Value>-1){ //falls der neue Wert > -1 => Updtae der lokalen Variable
             SetValueBoolean($IFTTT_local_ID, boolval($IFTTT_Value)); //Update
-            IPS_LogMessage('BTPClient'.$func,"Variable: IFTTT update!");
+            //IPS_LogMessage('BTPClient'.$func,"Variable: IFTTT update!");
         }
         else{ //falls der übergebene Wert = -1 => Wert der lokalen Variable zurückgeben
             $val= GetValueBoolean($IFTTT_local_ID);
-            IPS_LogMessage('BTPClient'.$func,"Variable: IFTTT zurückgegeben!");
+            //IPS_LogMessage('BTPClient'.$func,"Variable: IFTTT zurückgegeben!");
         }
     }
     return $val;
