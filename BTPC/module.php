@@ -141,7 +141,7 @@ class BTPClient extends IPSModule {
           }*/
       }
       else if ($trigger==2) {
-        $aktState= GetValueInteger($this->GetIDforIdent('STATE'));
+        //$aktState= GetValueInteger($this->GetIDforIdent('STATE'));
         $ifttt_State=(intval($ifttt_info));
         $bt_State=(intval($bt_info));
         $changeState=100+10*$bt_State+$ifttt_State;
