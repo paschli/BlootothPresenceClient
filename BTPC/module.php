@@ -235,7 +235,7 @@ class BTPClient extends IPSModule {
     else{ //Variable gefunden 
         if($BLT_Value>-1){//falls der neue Wert > -1 => Updtae der lokalen Variable
             SetValueBoolean($BLT_local_ID, boolval($BLT_Value));//Update
-            //IPS_LogMessage('BTPClient'.$func,"Variable: BLT update!");
+            IPS_LogMessage('BTPClient'.$func,"Variable: BLT update!");
         }
         else{//falls der übergebene Wert = -1 => Wert der lokalen Variable zurückgeben
             $val= GetValueBoolean($BLT_local_ID);
