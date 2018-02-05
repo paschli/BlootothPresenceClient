@@ -52,10 +52,11 @@ class BTPClient extends IPSModule {
       $ifttt_info=GetValueBoolean($this->GetIDForIdent('IFTTT_STATE'));
       $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz
       $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
-      IPS_LogMessage('BTPClient',"parentID=".$inst_id);
+      
       $inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
       $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
       $aktState = IPS_GetInstanceIDByName('Zustand', $inst_id);
+      IPS_LogMessage('BTPClient',"aktState=".$aktState);
       IPS_LogMessage('BTPClient',"_______________BTPClient-".$inst_name."____________");
       
       if($trigger==1)
