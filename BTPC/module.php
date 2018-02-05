@@ -12,7 +12,6 @@ class BTPClient extends IPSModule {
     $stateId = $this->RegisterVariableInteger('STATE', 'Zustand', '', 1);//Zustand Anwesenheit
     $IFTTTstateId = $this->RegisterVariableBoolean('IFTTT_STATE', 'IFTTT','', 2);//Zustand IFTTT
     $BLTstateId = $this->RegisterVariableBoolean('BLT_STATE', 'BLT','', 3);//Zustand Bluetooth
-    SetValueBoolean($BLTstateId, GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo')));
     $presentId = $this->RegisterVariableInteger('PRESENT_SINCE', 'Anwesend seit', '~UnixTimestamp', 4);
     $absentId = $this->RegisterVariableInteger('ABSENT_SINCE', 'Abwesend seit', '~UnixTimestamp', 5);
     IPS_SetIcon($this->GetIDForIdent('STATE'), 'Motion'); 
@@ -49,7 +48,7 @@ class BTPClient extends IPSModule {
   public function Start(int $trigger) {
       if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
-      $bt_info= GetValueBoolean($this->GetIDForIdent('BLT_STATE'));
+      $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
       $ifttt_info=GetValueBoolean($this->GetIDForIdent('IFTTT_STATE'));
       $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz
       $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
