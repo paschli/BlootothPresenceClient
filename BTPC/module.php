@@ -289,6 +289,8 @@ class BTPClient extends IPSModule {
       //    IFTTT 20x  = IFTTT von 1 nach 0
       //    IFTTT 21x  = IFTTT von 0 nach 1
       //    x = Zustand der jeweils anderen Methode
+      if($aktState<0) $aktState=0;
+      IPS_LogMessage('BTPClient_FSM_Zustand',"aktState=".$aktState." changeState=".$changeState);
       $newState=-2;
       switch ($aktState){
           case 0: 
