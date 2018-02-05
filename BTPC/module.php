@@ -254,7 +254,7 @@ class BTPClient extends IPSModule {
         }
         else{ //falls der übergebene Wert = -1 => Wert der lokalen Variable zurückgeben
             $val= GetValueBoolean($IFTTT_local_ID);
-            //IPS_LogMessage('BTPClient'.$func,"Variable: IFTTT zurückgegeben!");
+            IPS_LogMessage('BTPClient'.$func,"Variable: IFTTT zurückgegeben!");
         }
     }
     return $val;
