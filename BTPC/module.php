@@ -55,7 +55,7 @@ class BTPClient extends IPSModule {
       $inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
       $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
       IPS_LogMessage('BTPClient',"Suche Zustand in".$inst_id);
-      $aktState = IPS_GetInstanceIDByName("Zustand", $inst_id);
+      $aktState = IPS_GetInstanceIDByIdent("STATE", $inst_id);
       IPS_LogMessage('BTPClient',"aktState=".$aktState);                
       IPS_LogMessage('BTPClient',"_______________BTPClient-".$inst_name."____________");
       
