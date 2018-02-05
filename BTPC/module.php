@@ -47,6 +47,7 @@ class BTPClient extends IPSModule {
   
   public function Start(int $trigger) {
       if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
+      IPS_LogMessage('BTPClient',"_______________BTPStart____________");
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
       $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
       IPS_LogMessage('BTPClient',"bt_info=".$bt_info);
