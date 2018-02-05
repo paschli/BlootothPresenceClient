@@ -12,6 +12,7 @@ class BTPClient extends IPSModule {
     $stateId = $this->RegisterVariableInteger('STATE', 'Zustand', '', 1);//Zustand Anwesenheit
     $IFTTTstateId = $this->RegisterVariableBoolean('IFTTT_STATE', 'IFTTT','', 2);//Zustand IFTTT
     $BLTstateId = $this->RegisterVariableBoolean('BLT_STATE', 'BLT','', 3);//Zustand Bluetooth
+    SetValueBoolean($BLTstateId, GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo')));
     $presentId = $this->RegisterVariableInteger('PRESENT_SINCE', 'Anwesend seit', '~UnixTimestamp', 4);
     $absentId = $this->RegisterVariableInteger('ABSENT_SINCE', 'Abwesend seit', '~UnixTimestamp', 5);
     IPS_SetIcon($this->GetIDForIdent('STATE'), 'Motion'); 
