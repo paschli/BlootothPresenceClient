@@ -49,6 +49,7 @@ class BTPClient extends IPSModule {
       if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
       $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
+      IPS_LogMessage('BTPClient',"bt_info=".$bt_info);
       $ifttt_info=GetValueBoolean($this->GetIDForIdent('IFTTT_STATE'));
       $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz
       $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
