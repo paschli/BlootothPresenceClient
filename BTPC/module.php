@@ -224,6 +224,8 @@ class BTPClient extends IPSModule {
     //Falls statt einem Wert eine -1 übergeben wird, so wird der Wert der lokalen Variable zurückgegeben  
       
     $func='UpdateLocal';  
+    IPS_LogMessage('BTPClient'.$func,"Aufruf mit: Inst=".$Inst_ID." / BLT_Val=".$BLT_Value." / IFTTT_Val=".$IFTTT_Value);
+    
     $val=-1;
     $BLT_local_ID = @IPS_GetInstanceIDByName('BLT', $Inst_ID); //lokale Variable mit Namen im Objekt suchen 
     if ($BLT_local_ID === false){				// Variable nicht gefunden
