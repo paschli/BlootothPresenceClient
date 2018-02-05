@@ -220,7 +220,7 @@ class BTPClient extends IPSModule {
           }
 
           IPS_LogMessage('BTPClient',"Suche Zustand in ID: ".$UserInstID);
-          $id_state=@IPS_GetVariableIDByName('Zustand', $UserInstID); 
+          $id_state=@IPS_GetVariableIDByName('IFTTT', $UserInstID); 
           if($id_state === false){
                   IPS_LogMessage('BTPClient',"Fehler : Variable Zustand nicht gefunden!");
                   IPS_SemaphoreLeave('BTPCScan');
@@ -228,7 +228,7 @@ class BTPClient extends IPSModule {
           }
           IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_state);
           //$aktState = GetValueInteger($id_state);
-
+          SetValueBoolean($id_state, boolval($state) );
           
           $id_anw=@IPS_GetVariableIDByName('Anwesend seit', $UserInstID);
           if($id_anw === false){
