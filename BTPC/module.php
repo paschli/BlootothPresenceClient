@@ -227,7 +227,7 @@ class BTPClient extends IPSModule {
     IPS_LogMessage('BTPClient'.$func,"Aufruf mit: Inst=".$Inst_ID." / BLT_Val=".$BLT_Value." / IFTTT_Val=".$IFTTT_Value);
     
     $val=-1;
-    $BLT_local_ID = @IPS_GetInstanceIDByName('BLT', $Inst_ID); //lokale Variable mit Namen im Objekt suchen 
+    $BLT_local_ID = @IPS_GetObjectIDByName('BLT', $Inst_ID); //lokale Variable mit Namen im Objekt suchen 
     if ($BLT_local_ID === false){				// Variable nicht gefunden
         IPS_LogMessage('BTPClient'.$func,"Variable: BLT nicht gefunden!");
         return -2;
@@ -240,7 +240,7 @@ class BTPClient extends IPSModule {
             $val= GetValueBoolean($BLT_local_ID);
         }
     }
-    $IFTTT_local_ID = @IPS_GetInstanceIDByName('IFTTT', $Inst_ID); //lokale Variable mit Namen im Objekt suchen 
+    $IFTTT_local_ID = @IPS_GetObjectIDByName('IFTTT', $Inst_ID); //lokale Variable mit Namen im Objekt suchen 
     if ($IFTTT_local_ID === false){				// Variable nicht gefunden
         IPS_LogMessage('BTPClient'.$func,"Variable: IFTTT nicht gefunden!");
         return -3;
