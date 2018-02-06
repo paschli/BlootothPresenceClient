@@ -194,7 +194,6 @@ class BTPClient extends IPSModule {
       switch ($aktState){
           case 0: 
               if(($changeState==110)||($changeState==111)) $newState=2;
-              
               else if($changeState==210) $newState=1;
               break;
           case 1: 
