@@ -153,7 +153,7 @@ class BTPClient extends IPSModule {
       else if ($trigger==2) {
         $bt_State=(intval($bt_info));  
         if($bt_State){
-            $IFTTT_local_ID = IPS_GetObjectIDByName('IFTTT', $Inst_ID); //lokale Variable mit Namen im Objekt suchen 
+            $IFTTT_local_ID = IPS_GetObjectIDByName('IFTTT', $inst_id); //lokale Variable mit Namen im Objekt suchen 
             SetValueBoolean ($IFTTT_local_ID, True);//IFTTT auf 1 setzen
         }
         else {
