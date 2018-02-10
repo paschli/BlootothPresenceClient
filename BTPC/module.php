@@ -152,12 +152,18 @@ class BTPClient extends IPSModule {
       }
       else if ($trigger==2) {
         $bt_State=(intval($bt_info));  
-        $ifttt_State=$this->UpdateLocal($inst_id, $bt_State, -1); //lokale BLT Variable wird aktualisiert und IFTTT ausgelesen
+        if($bt_State){
+            $IFTTT_local_ID = @IPS_GetObjectIDByName('IFTTT', $Inst_ID); //lokale Variable mit Namen im Objekt suchen 
+            SetValueBoolean ($IFTTT_local_ID, True);//IFTTT auf 1 setzen
+        }
+        else {
+            $ifttt_State=$this->UpdateLocal($inst_id, $bt_State, -1); //lokale BLT Variable wird aktualisiert und IFTTT ausgelesen
+        }
         if($ifttt_State<0){
             IPS_LogMessage('BTPClient',"Fehler : Variable (ifttt_state) nicht aktualisiert!");
             exit;
         } 
-            
+        
         $changeState=100+10*$bt_State+$ifttt_State;
         SetValueInteger($aktState, $this->FSM_Zustand(GetValueInteger($aktState), $changeState));
           
@@ -200,7 +206,7 @@ class BTPClient extends IPSModule {
           case 2:    
               if($changeState==111) $newState=2;
               else if($changeState==200) $newState=0;
-          //    break;
+          //    break;                                  
           //case 2: 
               else if($changeState==101) $newState=2; //$newState=1;
               else if($changeState==201) $newState=3;
