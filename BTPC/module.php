@@ -157,6 +157,7 @@ class BTPClient extends IPSModule {
         if($bt_State){
             $IFTTT_local_ID = IPS_GetObjectIDByName('IFTTT', $inst_id); //lokale Variable mit Namen im Objekt suchen 
             SetValueBoolean ($IFTTT_local_ID, True);//IFTTT auf 1 setzen
+            $ifttt_State= GetValueBoolean($IFTTT_local_ID);
         }
         else {
             $ifttt_State=$this->UpdateLocal($inst_id, $bt_State, -1); //lokale BLT Variable wird aktualisiert und IFTTT ausgelesen
