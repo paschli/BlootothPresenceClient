@@ -50,9 +50,6 @@ class BTPClient extends IPSModule {
       IPS_LogMessage('BTPClient',"_______________BTPStart____________");
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
       $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
-      
-      
-      
       IPS_LogMessage('BTPClient',"bt_info=".$bt_info);
 //      $ifttt_info=GetValueBoolean($this->GetIDForIdent('IFTTT_STATE'));
 //      $blt_info=GetValueBoolean($this->GetIDForIdent('BLT_STATE'));
@@ -70,7 +67,7 @@ class BTPClient extends IPSModule {
         IPS_LogMessage('BTPClient',"String eingelesen");
         $array=explode(";",$string);
         IPS_LogMessage('BTPClient',"zerlege String:");
-        foreach($array as $item){
+        /*foreach($array as $item){
           if($item!=""){
               $subarray=explode("=",$item);
               $tag=$subarray[0];
@@ -87,8 +84,13 @@ class BTPClient extends IPSModule {
                                 exit();
                       }
            }
-        }
-          IPS_LogMessage('BTPClient',"String OK -> Auswertung:");
+        }*/
+        $output= $this->teile_string($string);
+        $user=$output["User"];
+        $state=$output["Zustand"];
+        $time_stamp = intval($output["Zeit"]);
+        
+        IPS_LogMessage('BTPClient',"String OK -> Auswertung:");
 
           $UserInstID = @IPS_GetInstanceIDByName($user, $parent_id); // Instanz mit Namen suchen, der im "USER"-Eintrag steht
           if ($UserInstID === false){				// Instanz nicht gefunden
@@ -99,15 +101,15 @@ class BTPClient extends IPSModule {
            IPS_SetParent($NewInsID, $parent_id); // Instanz einsortieren unter der übergeordneten Instanz
            $UserInstID=$NewInsID;
           }
-          else{							// instanz gefunden
-           //IPS_LogMessage('BTPClient',"Instanz mit Namen: ".$user." gefunden! ID:".$UserInstID);
-           if($user!=$inst_name){
-               IPS_LogMessage('BTPClient',"Gefundener Username (".$user.") passt nicht zur Instanz (".$inst_name.") -> Abbruch");
-               IPS_LogMessage('BTPClient',"_______________BTPClient-Ende____________");
-               IPS_SemaphoreLeave('BTPCScan');
-               exit();
-           }
-          }
+        else{							// instanz gefunden
+         //IPS_LogMessage('BTPClient',"Instanz mit Namen: ".$user." gefunden! ID:".$UserInstID);
+            if($user!=$inst_name){
+                IPS_LogMessage('BTPClient',"Gefundener Username (".$user.") passt nicht zur Instanz (".$inst_name.") -> Abbruch");
+                IPS_LogMessage('BTPClient',"_______________BTPClient-Ende____________");
+                IPS_SemaphoreLeave('BTPCScan');
+                exit();
+            }
+        }
 
           IPS_LogMessage('BTPClient',"Suche Zustand in ID: ".$UserInstID);
           $id_state=@IPS_GetVariableIDByName('Zustand', $UserInstID); 
@@ -183,9 +185,30 @@ class BTPClient extends IPSModule {
       
   }
   
-  private function analyse_string($string) {
-     $output=array("User"=>"","Zustand"=>"","Zeit"=>""); 
-      
+  private function teile_string($string) {
+    $output=array("User"=>"","Zustand"=>"","Zeit"=>""); 
+    IPS_LogMessage('BTPClient',"String eingelesen");
+        $array=explode(";",$string);
+        IPS_LogMessage('BTPClient',"zerlege String:");
+        foreach($array as $item){
+          if($item!=""){
+              $subarray=explode("=",$item);
+              $tag=$subarray[0];
+              $value=$subarray[1];
+
+              IPS_LogMessage('BTPClient',"Tag:".$tag." / Value:".$value);
+              switch($tag){
+                      case "User" : $output["User"] = $value; break;
+                      //case "Zustand": $state = boolval($value); break;
+                      case "Zustand": $output["Zustand"] = $value; break;
+                      case "Zeit": $output["Zeit"] = $value; break;
+                      default : IPS_LogMessage('BTPClient',"Tag=".$tag." nicht erkannt!");
+                                IPS_SemaphoreLeave('BTPCScan');
+                                exit();
+                      }
+           }
+        }
+    return $output;
   }
   
   private function FSM_Zustand(int $aktState, int $changeState) {
