@@ -51,14 +51,16 @@ class BTPClient extends IPSModule {
       $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
       $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
       
+      
+      
       IPS_LogMessage('BTPClient',"bt_info=".$bt_info);
-      $ifttt_info=GetValueBoolean($this->GetIDForIdent('IFTTT_STATE'));
-      $blt_info=GetValueBoolean($this->GetIDForIdent('BLT_STATE'));
+//      $ifttt_info=GetValueBoolean($this->GetIDForIdent('IFTTT_STATE'));
+//      $blt_info=GetValueBoolean($this->GetIDForIdent('BLT_STATE'));
       $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz
       $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
       $inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
       $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
-      IPS_LogMessage('BTPClient',"Suche Zustand in".$inst_id);
+      IPS_LogMessage('BTPClient',"Suche Zustand in".$inst_id." (".$inst_name.")");
       $aktState = IPS_GetObjectIDByIdent("STATE", $inst_id);
       IPS_LogMessage('BTPClient',"aktState=".$aktState);                
       IPS_LogMessage('BTPClient',"_______________BTPClient-".$inst_name."____________");
@@ -181,7 +183,10 @@ class BTPClient extends IPSModule {
       
   }
   
- 
+  private function analyse_string($string) {
+     $output=array("User"=>"","Zustand"=>"","Zeit"=>""); 
+      
+  }
   
   private function FSM_Zustand(int $aktState, int $changeState) {
       
