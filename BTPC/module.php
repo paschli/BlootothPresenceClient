@@ -57,12 +57,8 @@ class BTPClient extends IPSModule {
     $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
     $inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
     $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
-    $id_state=@IPS_GetVariableIDByName('Zustand', $UserInstID); 
-    if($id_state === false){
-        IPS_LogMessage('BTPClient',"Fehler : Variable Zustand nicht gefunden!");
-        IPS_SemaphoreLeave('BTPCScan');
-        exit;
-    }
+     
+    
     IPS_LogMessage('BTPClient',"Suche Zustand in".$inst_id." (".$inst_name.")");
     $aktState = IPS_GetObjectIDByIdent("STATE", $inst_id);
     IPS_LogMessage('BTPClient',"aktState=".$aktState);                
@@ -122,7 +118,13 @@ class BTPClient extends IPSModule {
         }
 
         IPS_LogMessage('BTPClient',"Suche Zustand in ID: ".$UserInstID);
-
+        
+        $id_state=@IPS_GetVariableIDByName('Zustand', $UserInstID);
+        if($id_state === false){
+            IPS_LogMessage('BTPClient',"Fehler : Variable Zustand nicht gefunden!");
+            IPS_SemaphoreLeave('BTPCScan');
+        exit;
+        }
         IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_state);
 
         $id_anw=@IPS_GetVariableIDByName('Anwesend seit', $UserInstID);
@@ -153,7 +155,8 @@ class BTPClient extends IPSModule {
               if (!$state) SetValueInteger($id_abw, $time_stamp);
               IPS_SetHidden($id_anw, !$state);
               IPS_SetHidden($id_abw, $state);
-              $state=$state_old & ($state|2);
+              $aktState=$aktState & 2; // zweite Stelle filtern
+              $state=$aktState | $state;
               SetValueInteger($id_state, $state);
               IPS_LogMessage('BTPClient',"Eintrag aktualisiert");
         //  }
@@ -163,8 +166,12 @@ class BTPClient extends IPSModule {
     }
     else if ($trigger==2) {
       //$bt_info ist der aktuelle BT-Zustand
-      $bt_State=(intval($bt_info)); 
-      SetValueBoolean($this->GetIDForIdent('BLT_STATE'),$bt_info);
+        $aktState=$aktState & 1; // erste Stelle filtern
+        $state=$aktState | ($bt_info<<1);
+        SetValueInteger($id_state, $state);
+        IPS_LogMessage('BTPClient',"Eintrag aktualisiert");
+    /* 
+        SetValueBoolean($this->GetIDForIdent('BLT_STATE'),$bt_info);
       if($bt_State){
           $IFTTT_local_ID = IPS_GetObjectIDByName('IFTTT', $inst_id); //lokale Variable mit Namen im Objekt suchen 
           SetValueBoolean ($IFTTT_local_ID, True);//IFTTT auf 1 setzen
@@ -180,7 +187,7 @@ class BTPClient extends IPSModule {
 
       $changeState=100+10*$bt_State+$ifttt_State;
       SetValueInteger($aktState, $this->FSM_Zustand(GetValueInteger($aktState), $changeState));
-
+    */
     }
       
         IPS_LogMessage('BTPClient',"_______________BTPClient-Ende____________");
