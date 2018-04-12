@@ -149,10 +149,10 @@ class BTPClient extends IPSModule {
         IPS_LogMessage('BTPClient', 'Push Check Box ='. strval($this->ReadPropertyBoolean('CheckPush')));
         if($this->ReadPropertyBoolean('CheckPush')===TRUE){
             if($state){
-                WFC_PushNotification(33722, 'Anwesend', $name." um ".strftime("%X",$time_stamp), '', 0);
+                WFC_PushNotification(33722, 'Anwesend', $inst_name." um ".strftime("%X",$time_stamp), '', 0);
             }
             else {
-                WFC_PushNotification(33722, 'Abwesend', $name." um ".strftime("%X",$time_stamp), '', 0);
+                WFC_PushNotification(33722, 'Abwesend', $inst_name." um ".strftime("%X",$time_stamp), '', 0);
             }
             IPS_LogMessage('BTPClient', 'Push Nachricht gesendet');
         }
