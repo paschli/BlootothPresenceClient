@@ -3,7 +3,8 @@ class BTPClient extends IPSModule {
   public function Create() {
     parent::Create();
     $this->RegisterPropertyInteger('idSourceString', 0); //zu überwachender String mit IFTTT Nachricht 
-    $this->RegisterPropertyInteger('idBluetoothInfo', 0); //zu überwachender Boolean mit Info zum Mac-Scan 
+    $this->RegisterPropertyInteger('idBluetoothInfo', 0); //zu überwachender Boolean mit Info zum Mac-Scan
+    $this->RegisterPropertyInteger('CheckPush', 0); //falls push gewünscht wird
     $this->RegisterPropertyInteger('aktState', 0);//aktueller Status
     
   }
@@ -146,6 +147,14 @@ class BTPClient extends IPSModule {
         if (!$state) SetValueInteger($id_abw, $time_stamp);
         IPS_SetHidden($id_anw, !$state);
         IPS_SetHidden($id_abw, $state);
+        if($this->ReadPropertyBoolean('CheckPush')){
+            if($state){
+                WFC_PushNotification(33722, 'Anwesend', $name." um ".strftime("%X",$time_stamp), '', 0);
+            }
+            else {
+                WFC_PushNotification(33722, 'Abwesend', $name." um ".strftime("%X",$time_stamp), '', 0);
+            }
+        }
     }
     }
     else {
