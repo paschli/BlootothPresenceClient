@@ -165,6 +165,12 @@ class BTPClient extends IPSModule {
         }*/
     }
     else if ($trigger==2) {
+        $id_state=@IPS_GetVariableIDByName('Zustand', $UserInstID);
+        if($id_state === false){
+            IPS_LogMessage('BTPClient',"Fehler : Variable Zustand nicht gefunden!");
+            IPS_SemaphoreLeave('BTPCScan');
+        exit;
+        }
       //$bt_info ist der aktuelle BT-Zustand
         $aktState=$aktState & 1; // erste Stelle filtern
         $state=$aktState | ($bt_info<<1);
