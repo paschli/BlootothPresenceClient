@@ -127,7 +127,7 @@ class BTPClient extends IPSModule {
      
  //---------------------------Zeit Eintrag ---------------------------------------   
     
-    if((($state>0)&&($oldState==0))||(($state==0)&&($oldState>0))){
+    if((($state>0)&&($oldState==0))||(($state==0)&&($oldState>0))){ //Falls eine Änderung des Status erfolgte
     $id_anw=@IPS_GetVariableIDByName('Anwesend seit', $inst_id);
         if($id_anw === false){
                 IPS_LogMessage('BTPClient',"Fehler : Variable (Anwesend seit) nicht gefunden!");
