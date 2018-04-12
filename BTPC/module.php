@@ -54,14 +54,14 @@ class BTPClient extends IPSModule {
     $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
      
     
-    IPS_LogMessage('BTPClient',"Suche Zustand in ".$inst_id." (".$inst_name.")");
+    IPS_LogMessage('BTPClient',"Aktuelle Instanz: ".$inst_id." (".$inst_name.")");
     $id_aktState = IPS_GetObjectIDByIdent("STATE", $inst_id);
-    IPS_LogMessage('BTPClient',"aktState=".$id_aktState);                
-    IPS_LogMessage('BTPClient',"_______________BTP-Client:".$inst_name."____________");
+//  IPS_LogMessage('BTPClient',"aktState=".$id_aktState);                
+//  IPS_LogMessage('BTPClient',"_______________BTP-Client:".$inst_name."____________");
     $aktState= GetValueInteger($id_aktState);
     if($trigger==1)
     {
-        IPS_LogMessage('BTPClient',"String eingelesen");
+        IPS_LogMessage('BTPClient',"String Ereignis");
         $output= $this->teile_string($string);
         if($output["Fehler"]>0){
             IPS_LogMessage('BTPClient',"String Error = ".$output["Fehler"]);
@@ -134,19 +134,19 @@ class BTPClient extends IPSModule {
               $aktState=$aktState & 2; // zweite Stelle filtern
               $state=$aktState | $state;
               SetValueInteger($id_state, $state);
-              IPS_LogMessage('BTPClient',"Eintrag aktualisiert!");
+              IPS_LogMessage('BTPClient',"Eintrag (".$id_aktState.") aktualisiert!");
         //  }
         /*  else {
               IPS_LogMessage('BTPClient',"Event ist älter als vorhande Zeitstempel -> keine Aktualisierung erforderlich");
         }*/
     }
     else if ($trigger==2) {
-        
+        IPS_LogMessage('BTPClient',"Bluetooth Ereignis");
       //$bt_info ist der aktuelle BT-Zustand
         $aktState=$aktState & 1; // erste Stelle filtern
         $state=$aktState | ($bt_info<<1);
         SetValueInteger($id_aktState, $state);
-        IPS_LogMessage('BTPClient',"Eintrag aktualisiert!");
+        IPS_LogMessage('BTPClient',"Eintrag (".$id_aktState.") aktualisiert!");
     /* 
         SetValueBoolean($this->GetIDForIdent('BLT_STATE'),$bt_info);
       if($bt_State){
