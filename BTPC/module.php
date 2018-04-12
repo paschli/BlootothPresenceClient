@@ -185,7 +185,7 @@ class BTPClient extends IPSModule {
     IPS_SetName($NewInsID, $user); // Instanz benennen
     IPS_SetParent($NewInsID, $parent_id); // Instanz einsortieren unter der übergeordneten Instanz
     $stringID=$this->ReadPropertyInteger('idSourceString');
-    $this->RegisterEvent('OnStringChange', 0, 'BTPC_Start($id,1)',$stringID);
+    $this->RegisterEvent('OnStringChange', 0, 'BTPC_Start($id,1)','idSourceString');
     return $NewInsID;
   }
   
