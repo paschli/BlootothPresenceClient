@@ -165,7 +165,7 @@ class BTPClient extends IPSModule {
         }*/
     }
     else if ($trigger==2) {
-        IPS_LogMessage('BTPClient',"Suche Zustand in ID: ".$UserInstID);
+        IPS_LogMessage('BTPClient',"Suche Zustand in ID: ".$aktState);
         $id_state=@IPS_GetVariableIDByName('Zustand', $UserInstID);
         if($id_state === false){
             IPS_LogMessage('BTPClient',"Fehler : Variable Zustand nicht gefunden!");
