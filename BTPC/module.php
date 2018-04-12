@@ -37,6 +37,7 @@ class BTPClient extends IPSModule {
       IPS_SetEventActive($id, true);             //Ereignis aktivieren
       IPS_SetParent($id, $this->InstanceID);
       IPS_SetIdent($id, $ident);
+      IPS_LogMessage('BTPClient',"Event created");
     }
     IPS_SetName($id, $ident);
     IPS_SetHidden($id, true);
