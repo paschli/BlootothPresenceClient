@@ -217,7 +217,8 @@ class BTPClient extends IPSModule {
                                       $output["Fehler"]--; break;
                       case "Zeit": $output["Zeit"] = $value;
                                       $output["Fehler"]--; break;
-                      default : return $output["Fehler"]=4;
+                      default :  $output["Fehler"]=4;
+                                 return $output;
                       }
            }
         }
