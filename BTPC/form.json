@@ -1,7 +1,8 @@
 {
   "elements": [
-    { "name": "idSourceString", "type": "SelectVariable", "caption": "idSourceString" },
-    { "name": "idBluetoothInfo", "type": "SelectVariable", "caption": "idBluetoothInfo" }
+    { "name": "idSourceString", "type": "SelectVariable", "caption": "ID Source String" },
+    { "name": "idBluetoothInfo", "type": "SelectVariable", "caption": "ID Bluetooth Status" },
+    { "name": "CheckPush", "type": "CheckBox", "caption": "Push Nachricht bei Statusänderung" }
   ],
   "actions": [
     { "type": "Button", "label": "String lesen", "onClick": "print_r(BTPC_Start($id,1));" }
