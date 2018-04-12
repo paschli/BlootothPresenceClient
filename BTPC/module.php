@@ -16,16 +16,17 @@ class BTPClient extends IPSModule {
     IPS_SetIcon($this->GetIDForIdent('PRESENT_SINCE'), 'Clock');
     IPS_SetIcon($this->GetIDForIdent('ABSENT_SINCE'), 'Clock');
     if($this->ReadPropertyInteger('idSourceString')!=0){  
-    	$this->RegisterEvent('OnStringChange', 0, 'BTPC_Start($id,1)','idSourceString');
+    	$this->RegisterEvent('OnStringChange', 0, 'BTPC_Start($id,1)','idSourceString',$this->InstanceID);
     }
     if($this->ReadPropertyInteger('idBluetoothInfo')!=0){  
-    	$this->RegisterEvent('OnBloutoothChange', 0, 'BTPC_Start($id,2)','idBluetoothInfo');
+    	$this->RegisterEvent('OnBloutoothChange', 0, 'BTPC_Start($id,2)','idBluetoothInfo',$this->InstanceID);
     }
   }
   
   
-  protected function RegisterEvent($ident, $interval, $script, $trigger) {
-    $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
+  protected function RegisterEvent($ident, $interval, $script, $trigger,$instanceID) {
+ //   $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
+    $id = @IPS_GetObjectIDByIdent($ident, $instanceID);
     if ($id && IPS_GetEvent($id)['EventType'] <> 1) {
       IPS_DeleteEvent($id);
       IPS_LogMessage('BTPClient',"Event deleted");
@@ -35,7 +36,8 @@ class BTPClient extends IPSModule {
       $id = IPS_CreateEvent(0);
       IPS_SetEventTrigger($id, 1, $this->ReadPropertyInteger($trigger)); //Bei Änderung von der gewählten Variable 
       IPS_SetEventActive($id, true);             //Ereignis aktivieren
-      IPS_SetParent($id, $this->InstanceID);
+//      IPS_SetParent($id, $this->InstanceID);
+      IPS_SetParent($id, $instanceID);
       IPS_SetIdent($id, $ident);
       IPS_LogMessage('BTPClient',"Event created (".$id.")");
     }
@@ -185,7 +187,7 @@ class BTPClient extends IPSModule {
     IPS_SetName($NewInsID, $user); // Instanz benennen
     IPS_SetParent($NewInsID, $parent_id); // Instanz einsortieren unter der übergeordneten Instanz
     $stringID=$this->ReadPropertyInteger('idSourceString');
-    $this->RegisterEvent('OnStringChange', 0, 'BTPC_Start($id,1)','idSourceString');
+    $this->RegisterEvent('OnStringChange', 0, 'BTPC_Start($id,1)','idSourceString',$NewInsID);
     return $NewInsID;
   }
   
