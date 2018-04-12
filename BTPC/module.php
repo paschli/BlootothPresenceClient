@@ -154,6 +154,7 @@ class BTPClient extends IPSModule {
             else {
                 WFC_PushNotification(33722, 'Abwesend', $name." um ".strftime("%X",$time_stamp), '', 0);
             }
+            IPS_LogMessage('BTPClient', 'Push Nachricht gesendet');
         }
     }
     }
