@@ -10,8 +10,6 @@ class BTPClient extends IPSModule {
   public function ApplyChanges() {
     parent::ApplyChanges();
     $stateId = $this->RegisterVariableInteger('STATE', 'Zustand', '', 1);//Zustand Anwesenheit
-//    $IFTTTstateId = $this->RegisterVariableBoolean('IFTTT_STATE', 'IFTTT','', 2);//Zustand IFTTT
-//    $BLTstateId = $this->RegisterVariableBoolean('BLT_STATE', 'BLT','', 3);//Zustand Bluetooth
     $presentId = $this->RegisterVariableInteger('PRESENT_SINCE', 'Anwesend seit', '~UnixTimestamp', 4);
     $absentId = $this->RegisterVariableInteger('ABSENT_SINCE', 'Abwesend seit', '~UnixTimestamp', 5);
     IPS_SetIcon($this->GetIDForIdent('STATE'), 'Motion'); 
@@ -50,9 +48,6 @@ class BTPClient extends IPSModule {
     IPS_LogMessage('BTPClient',"_______________BTP-Start____________");
     $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
     $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
-//    IPS_LogMessage('BTPClient',"bt_info=".$bt_info);
-//      $ifttt_info=GetValueBoolean($this->GetIDForIdent('IFTTT_STATE'));
-//      $blt_info=GetValueBoolean($this->GetIDForIdent('BLT_STATE'));
     $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz
     $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
     $inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
@@ -67,31 +62,13 @@ class BTPClient extends IPSModule {
     if($trigger==1)
     {
         IPS_LogMessage('BTPClient',"String eingelesen");
-        $array=explode(";",$string);
-      /*foreach($array as $item){
-        if($item!=""){
-            $subarray=explode("=",$item);
-            $tag=$subarray[0];
-            $value=$subarray[1];
-
-            IPS_LogMessage('BTPClient',"Tag:".$tag." / Value:".$value);
-            switch($tag){
-                    case "User" : $user = $value; break;
-                    //case "Zustand": $state = boolval($value); break;
-                    case "Zustand": $state = $value; break;
-                    case "Zeit": $time_stamp = intval($value); break;
-                    default : IPS_LogMessage('BTPClient',"Tag=".$tag." nicht erkannt!");
-                              IPS_SemaphoreLeave('BTPCScan');
-                              exit();
-                    }
-         }
-      }*/
         $output= $this->teile_string($string);
         if($output["Fehler"]>0){
             IPS_LogMessage('BTPClient',"String Error = ".$output["Fehler"]);
             IPS_SemaphoreLeave('BTPCScan');
-            exit();
+            return;
         }
+        
         $user=$output["User"];
         $state=$output["Zustand"];
         $time_stamp = intval($output["Zeit"]);
@@ -112,7 +89,7 @@ class BTPClient extends IPSModule {
                 IPS_LogMessage('BTPClient',"Gefundener Username (".$user.") passt nicht zur Instanz (".$inst_name.") -> Abbruch");
                 IPS_LogMessage('BTPClient',"_______________BTP-Ende____________");
                 IPS_SemaphoreLeave('BTPCScan');
-                exit();
+                return;
             }
         }
 
