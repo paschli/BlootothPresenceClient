@@ -117,7 +117,9 @@ class BTPClient extends IPSModule {
         $aktState=$aktState & 1; // erste Stelle filtern
         $state=$aktState | ($bt_info<<1);
         SetValueInteger($id_aktState, $state);
+        $time_stamp = time();
         IPS_LogMessage('BTPClient',"Eintrag (".$id_aktState.") aktualisiert!");
+        
     }
       
         IPS_LogMessage('BTPClient',"_______________BTP-Ende____________");
