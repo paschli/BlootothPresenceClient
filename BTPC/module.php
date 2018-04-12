@@ -50,7 +50,7 @@ class BTPClient extends IPSModule {
     IPS_LogMessage('BTPClient',"_______________BTPStart____________");
     $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
     $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
-    IPS_LogMessage('BTPClient',"bt_info=".$bt_info);
+//    IPS_LogMessage('BTPClient',"bt_info=".$bt_info);
 //      $ifttt_info=GetValueBoolean($this->GetIDForIdent('IFTTT_STATE'));
 //      $blt_info=GetValueBoolean($this->GetIDForIdent('BLT_STATE'));
     $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz
@@ -68,7 +68,6 @@ class BTPClient extends IPSModule {
     {
         IPS_LogMessage('BTPClient',"String eingelesen");
         $array=explode(";",$string);
-        IPS_LogMessage('BTPClient',"zerlege String:");
       /*foreach($array as $item){
         if($item!=""){
             $subarray=explode("=",$item);
@@ -218,7 +217,7 @@ class BTPClient extends IPSModule {
                                       $output["Fehler"]--; break;
                       case "Zeit": $output["Zeit"] = $value;
                                       $output["Fehler"]--; break;
-                      default : $output["Fehler"]=4;
+                      default : return $output["Fehler"]=4;
                       }
            }
         }
