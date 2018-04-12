@@ -22,6 +22,8 @@ class BTPClient extends IPSModule {
     	$this->RegisterEvent('OnBloutoothChange', 0, 'BTPC_Start($id,2)','idBluetoothInfo');
     }
   }
+  
+  
   protected function RegisterEvent($ident, $interval, $script, $trigger) {
     $id = @IPS_GetObjectIDByIdent($ident, $this->InstanceID);
     if ($id && IPS_GetEvent($id)['EventType'] <> 1) {
@@ -46,29 +48,33 @@ class BTPClient extends IPSModule {
   public function Start($trigger) {
     if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
     IPS_LogMessage('BTPClient',"_______________BTP-Start____________");
+//--------------------------Init------------------------------------------------ 
     $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
     $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
     $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz
     $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
     $inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
     $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
-     
-    
+    $id_aktState = IPS_GetObjectIDByIdent("STATE", $inst_id);   // Zustandsvariable suchen
+    $aktState= GetValueInteger($id_aktState);                   // Zustandsvariable auslesen
+    $oldState= $aktState;
     IPS_LogMessage('BTPClient',"Aktuelle Instanz: ".$inst_id." (".$inst_name.")");
-    $id_aktState = IPS_GetObjectIDByIdent("STATE", $inst_id);
+    
 //  IPS_LogMessage('BTPClient',"aktState=".$id_aktState);                
 //  IPS_LogMessage('BTPClient',"_______________BTP-Client:".$inst_name."____________");
-    $aktState= GetValueInteger($id_aktState);
+   
+
+//--------------------------IFTTT Ereignis--------------------------------------
     if($trigger==1)
     {
         IPS_LogMessage('BTPClient',"String Ereignis");
-        $output= $this->teile_string($string);
-        if($output["Fehler"]>0){
+        $output= $this->teile_string($string);  // String zerlegen
+        if($output["Fehler"]>0){                //falls der String fehlerhaft ist
             IPS_LogMessage('BTPClient',"String Error = ".$output["Fehler"]);
             IPS_SemaphoreLeave('BTPCScan');
             return;
         }
-        
+        //Stringeinträge zuweisen
         $user=$output["User"];
         $state=$output["Zustand"];
         $time_stamp = intval($output["Zeit"]);
@@ -76,12 +82,6 @@ class BTPClient extends IPSModule {
 
         $UserInstID = @IPS_GetInstanceIDByName($user, $parent_id); // Instanz mit Namen suchen, der im "USER"-Eintrag steht
         if ($UserInstID === false){				// Instanz nicht gefunden
-
-            /*IPS_LogMessage('BTPClient',"Instanz mit Namen: ".$user." nicht gefunden! Muss neu angelegt werden!");
-            IPS_LogMessage('BTPClient',"Anlegen in: ".$parent_id);	
-            $NewInsID = IPS_CreateInstance("{58C01EE2-6859-492A-9B7B-25EDAA6D48FE}");
-            IPS_SetName($NewInsID, $user); // Instanz benennen
-            IPS_SetParent($NewInsID, $parent_id); // Instanz einsortieren unter der übergeordneten Instanz*/
             $UserInstID= $this->create_instance($user, $parent_id);
         }
         else{							// instanz gefunden
@@ -93,53 +93,24 @@ class BTPClient extends IPSModule {
             }
         }
 
-        IPS_LogMessage('BTPClient',"Suche Zustand in ID: ".$UserInstID);
+//        IPS_LogMessage('BTPClient',"Suche Zustand in ID: ".$UserInstID);
         
         $id_state=@IPS_GetVariableIDByName('Zustand', $UserInstID);
         if($id_state === false){
             IPS_LogMessage('BTPClient',"Fehler : Variable Zustand nicht gefunden!");
             IPS_SemaphoreLeave('BTPCScan');
-        exit;
+        return;
         }
-        IPS_LogMessage('BTPClient',"    Gefunden! ID: ".$id_state);
+//        IPS_LogMessage('BTPClient',"    Gefunden! ID: ".$id_state);
 
-        $id_anw=@IPS_GetVariableIDByName('Anwesend seit', $UserInstID);
-        if($id_anw === false){
-                IPS_LogMessage('BTPClient',"Fehler : Variable (Anwesend seit) nicht gefunden!");
-                exit;
-        }  
-        $id_abw=@IPS_GetVariableIDByName('Abwesend seit', $UserInstID);
+        
+        $aktState=$aktState & 2; // zweite Stelle filtern
+        $state=$aktState | $state;
+        SetValueInteger($id_state, $state);
+        IPS_LogMessage('BTPClient',"Eintrag (".$id_aktState.") aktualisiert!");
 
-        if($id_abw === false){
-                IPS_LogMessage('BTPClient',"Fehler : Variable (Abwesend seit) nicht gefunden!");
-                exit;
-        } 
-
-        /*$anw_alt= GetValueInteger($id_anw);
-        $abw_alt= GetValueInteger($id_abw);
-
-        $bt_State= $this->UpdateLocal($inst_id, -1, $state);
-        if($bt_State<0){
-          IPS_LogMessage('BTPClient',"Fehler : Variable (bt_state) nicht aktualisiert!");
-          exit;
-        }
-          $changeState=200+10*$state+$bt_State;
-          SetValueInteger($aktState, $this->FSM_Zustand(GetValueInteger($aktState), $changeState));
-        */  
-        //if(($time_stamp>$anw_alt)&&($time_stamp>$abw_alt)){
-              if ($state) SetValueInteger($id_anw, $time_stamp);
-              if (!$state) SetValueInteger($id_abw, $time_stamp);
-              IPS_SetHidden($id_anw, !$state);
-              IPS_SetHidden($id_abw, $state);
-              $aktState=$aktState & 2; // zweite Stelle filtern
-              $state=$aktState | $state;
-              SetValueInteger($id_state, $state);
-              IPS_LogMessage('BTPClient',"Eintrag (".$id_aktState.") aktualisiert!");
-        //  }
-        /*  else {
-              IPS_LogMessage('BTPClient',"Event ist älter als vorhande Zeitstempel -> keine Aktualisierung erforderlich");
-        }*/
     }
+//--------------------------Bluetooth Ereignis--------------------------------------
     else if ($trigger==2) {
         IPS_LogMessage('BTPClient',"Bluetooth Ereignis");
       //$bt_info ist der aktuelle BT-Zustand
@@ -147,29 +118,31 @@ class BTPClient extends IPSModule {
         $state=$aktState | ($bt_info<<1);
         SetValueInteger($id_aktState, $state);
         IPS_LogMessage('BTPClient',"Eintrag (".$id_aktState.") aktualisiert!");
-    /* 
-        SetValueBoolean($this->GetIDForIdent('BLT_STATE'),$bt_info);
-      if($bt_State){
-          $IFTTT_local_ID = IPS_GetObjectIDByName('IFTTT', $inst_id); //lokale Variable mit Namen im Objekt suchen 
-          SetValueBoolean ($IFTTT_local_ID, True);//IFTTT auf 1 setzen
-          $ifttt_State= GetValueBoolean($IFTTT_local_ID);
-      }
-      else {
-          $ifttt_State=$this->UpdateLocal($inst_id, $bt_State, -1); //lokale BLT Variable wird aktualisiert und IFTTT ausgelesen
-      }
-      if($ifttt_State<0){
-          IPS_LogMessage('BTPClient',"Fehler : Variable (ifttt_state) nicht aktualisiert!");
-          exit;
-      } 
-
-      $changeState=100+10*$bt_State+$ifttt_State;
-      SetValueInteger($aktState, $this->FSM_Zustand(GetValueInteger($aktState), $changeState));
-    */
     }
       
         IPS_LogMessage('BTPClient',"_______________BTP-Ende____________");
         IPS_SemaphoreLeave('BTPCScan');
-    } 
+     
+ //---------------------------Zeit Eintrag ---------------------------------------   
+    
+    if((($state>0)&&($oldState==0))||(($state==0)&&($oldState>0))){
+    $id_anw=@IPS_GetVariableIDByName('Anwesend seit', $UserInstID);
+        if($id_anw === false){
+                IPS_LogMessage('BTPClient',"Fehler : Variable (Anwesend seit) nicht gefunden!");
+                return;
+        }  
+        $id_abw=@IPS_GetVariableIDByName('Abwesend seit', $UserInstID);
+
+        if($id_abw === false){
+                IPS_LogMessage('BTPClient',"Fehler : Variable (Abwesend seit) nicht gefunden!");
+                return;
+        } 
+        if ($state) SetValueInteger($id_anw, $time_stamp);
+        if (!$state) SetValueInteger($id_abw, $time_stamp);
+        IPS_SetHidden($id_anw, !$state);
+        IPS_SetHidden($id_abw, $state);
+    }
+    }
     else {
       IPS_LogMessage('BTPClient', 'Semaphore Timeout');
     }
