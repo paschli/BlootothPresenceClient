@@ -47,7 +47,7 @@ class BTPClient extends IPSModule {
   
   public function Start($trigger) {
     if(IPS_SemaphoreEnter('BTPCScan', 5000)) {
-    IPS_LogMessage('BTPClient',"_______________BTPStart____________");
+    IPS_LogMessage('BTPClient',"_______________BTP-Start____________");
     $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
     $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
 //    IPS_LogMessage('BTPClient',"bt_info=".$bt_info);
@@ -62,7 +62,7 @@ class BTPClient extends IPSModule {
     IPS_LogMessage('BTPClient',"Suche Zustand in ".$inst_id." (".$inst_name.")");
     $id_aktState = IPS_GetObjectIDByIdent("STATE", $inst_id);
     IPS_LogMessage('BTPClient',"aktState=".$id_aktState);                
-    IPS_LogMessage('BTPClient',"_______________BTPClient-".$inst_name."____________");
+    IPS_LogMessage('BTPClient',"_______________BTP-Client:".$inst_name."____________");
     $aktState= GetValueInteger($id_aktState);
     if($trigger==1)
     {
@@ -110,7 +110,7 @@ class BTPClient extends IPSModule {
         else{							// instanz gefunden
             if($user!=$inst_name){
                 IPS_LogMessage('BTPClient',"Gefundener Username (".$user.") passt nicht zur Instanz (".$inst_name.") -> Abbruch");
-                IPS_LogMessage('BTPClient',"_______________BTPClient-Ende____________");
+                IPS_LogMessage('BTPClient',"_______________BTP-Ende____________");
                 IPS_SemaphoreLeave('BTPCScan');
                 exit();
             }
@@ -190,7 +190,7 @@ class BTPClient extends IPSModule {
     */
     }
       
-        IPS_LogMessage('BTPClient',"_______________BTPClient-Ende____________");
+        IPS_LogMessage('BTPClient',"_______________BTP-Ende____________");
         IPS_SemaphoreLeave('BTPCScan');
     } 
     else {
