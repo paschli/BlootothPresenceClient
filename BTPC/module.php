@@ -126,8 +126,7 @@ class BTPClient extends IPSModule {
         
     }
       
-        IPS_LogMessage('BTPClient',"_______________BTP-Ende____________");
-        IPS_SemaphoreLeave('BTPCScan');
+        
      
  //---------------------------Zeit Eintrag ---------------------------------------   
     
@@ -158,6 +157,9 @@ class BTPClient extends IPSModule {
             IPS_LogMessage('BTPClient', 'Push Nachricht gesendet');
         }
     }
+    IPS_LogMessage('BTPClient',"_______________BTP-Ende____________");
+    IPS_SemaphoreLeave('BTPCScan');
+    
     }
     else {
       IPS_LogMessage('BTPClient', 'Semaphore Timeout');
