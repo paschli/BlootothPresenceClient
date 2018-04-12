@@ -124,7 +124,7 @@ class BTPClient extends IPSModule {
             IPS_SemaphoreLeave('BTPCScan');
         exit;
         }
-        IPS_LogMessage('BTPClient',"Gefunden! ID: ".$id_state);
+        IPS_LogMessage('BTPClient',"    Gefunden! ID: ".$id_state);
 
         $id_anw=@IPS_GetVariableIDByName('Anwesend seit', $UserInstID);
         if($id_anw === false){
@@ -157,7 +157,7 @@ class BTPClient extends IPSModule {
               $aktState=$aktState & 2; // zweite Stelle filtern
               $state=$aktState | $state;
               SetValueInteger($id_state, $state);
-              IPS_LogMessage('BTPClient',"Eintrag aktualisiert");
+              IPS_LogMessage('BTPClient',"Eintrag aktualisiert!");
         //  }
         /*  else {
               IPS_LogMessage('BTPClient',"Event ist älter als vorhande Zeitstempel -> keine Aktualisierung erforderlich");
@@ -169,7 +169,7 @@ class BTPClient extends IPSModule {
         $aktState=$aktState & 1; // erste Stelle filtern
         $state=$aktState | ($bt_info<<1);
         SetValueInteger($id_aktState, $state);
-        IPS_LogMessage('BTPClient',"Eintrag aktualisiert");
+        IPS_LogMessage('BTPClient',"Eintrag aktualisiert!");
     /* 
         SetValueBoolean($this->GetIDForIdent('BLT_STATE'),$bt_info);
       if($bt_State){
@@ -209,7 +209,7 @@ class BTPClient extends IPSModule {
               $tag=$subarray[0];
               $value=$subarray[1];
 
-              IPS_LogMessage('BTPClient',"Tag: ".$tag." (".$value.")");
+              IPS_LogMessage('BTPClient'," - Tag: ".$tag." (".$value.")");
               switch($tag){
                       case "User" : $output["User"] = $value; 
                                     $output["Fehler"]--; break;
