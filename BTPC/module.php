@@ -182,7 +182,9 @@ class BTPClient extends IPSModule {
     IPS_LogMessage('BTPClient',"Anlegen in: ".$parent_id);	
     $NewInsID = IPS_CreateInstance("{58C01EE2-6859-492A-9B7B-25EDAA6D48FE}");
     IPS_SetName($NewInsID, $user); // Instanz benennen
-    IPS_SetParent($NewInsID, $parent_id); // Instanz einsortieren unter der übergeordneten Instanz  
+    IPS_SetParent($NewInsID, $parent_id); // Instanz einsortieren unter der übergeordneten Instanz
+    $stringID=$this->ReadPropertyInteger('idSourceString');
+    $this->RegisterEvent('OnStringChange', 0, 'BTPC_Start($id,1)',$stringID);
     return $NewInsID;
   }
   
