@@ -59,7 +59,7 @@ class BTPClient extends IPSModule {
     $inst_name=$inst_obj['ObjectName'];  			// Name der aktuellen Instanz, in der dieses Skript ausgeführt wird
      
     
-    IPS_LogMessage('BTPClient',"Suche Zustand in".$inst_id." (".$inst_name.")");
+    IPS_LogMessage('BTPClient',"Suche Zustand in ".$inst_id." (".$inst_name.")");
     $id_aktState = IPS_GetObjectIDByIdent("STATE", $inst_id);
     IPS_LogMessage('BTPClient',"aktState=".$id_aktState);                
     IPS_LogMessage('BTPClient',"_______________BTPClient-".$inst_name."____________");
@@ -210,7 +210,7 @@ class BTPClient extends IPSModule {
               $tag=$subarray[0];
               $value=$subarray[1];
 
-              IPS_LogMessage('BTPClient',"Tag:".$tag." / Value:".$value);
+              IPS_LogMessage('BTPClient',"Tag: ".$tag." (".$value.")");
               switch($tag){
                       case "User" : $output["User"] = $value; 
                                     $output["Fehler"]--; break;
