@@ -3,7 +3,8 @@ class BTPClient extends IPSModule {
   public function Create() {
     parent::Create();
     $this->RegisterPropertyInteger('idSourceString', 0); //zu überwachender String mit IFTTT Nachricht 
-    $this->RegisterPropertyInteger('idBluetoothInfo', 0); //zu überwachender Boolean mit Info zum Mac-Scan
+    $this->RegisterPropertyInteger('idBluetoothInfo1', 0); //zu überwachender Boolean mit Info zum Mac-Scan
+    $this->RegisterPropertyInteger('idBluetoothInfo2', 0); //zu überwachender Boolean mit Info zum Mac-Scan
     $this->RegisterPropertyBoolean('CheckPush', 0); //falls push gewünscht wird
     $this->RegisterPropertyInteger('aktState', 0);//aktueller Status
     
@@ -19,8 +20,11 @@ class BTPClient extends IPSModule {
     if($this->ReadPropertyInteger('idSourceString')!=0){  
     	$this->RegisterEvent('OnStringChange', 0, 'BTPC_Start($id,1)','idSourceString',$this->InstanceID);
     }
-    if($this->ReadPropertyInteger('idBluetoothInfo')!=0){  
-    	$this->RegisterEvent('OnBloutoothChange', 0, 'BTPC_Start($id,2)','idBluetoothInfo',$this->InstanceID);
+    if($this->ReadPropertyInteger('idBluetoothInfo1')!=0){  
+    	$this->RegisterEvent('OnBloutoothChange', 0, 'BTPC_Start($id,2)','idBluetoothInfo1',$this->InstanceID);
+    }
+    if($this->ReadPropertyInteger('idBluetoothInfo2')!=0){  
+    	$this->RegisterEvent('OnBloutoothChange_ad', 0, 'BTPC_Start($id,2)','idBluetoothInfo2',$this->InstanceID);
     }
   }
   
@@ -54,7 +58,10 @@ class BTPClient extends IPSModule {
     IPS_LogMessage('BTPClient',"_______________BTP-Start____________");
 //--------------------------Init------------------------------------------------ 
     $string=GetValueString($this->ReadPropertyInteger('idSourceString'));
-    $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo'));
+    $bt_info= GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo1'));
+    if($this->ReadPropertyInteger('idBluetoothInfo2')!=0){
+        $bt_info_ad = GetValueBoolean($this->ReadPropertyInteger('idBluetoothInfo2'));
+    }
     $inst_id=IPS_GetParent($this->GetIDForIdent('STATE'));	// ID der aktuellen Instanz
     $parent_id=IPS_GetParent($inst_id);  			// ID der übergeordneten Instanz  
     $inst_obj=IPS_GetObject($inst_id);   			// Objekt_Info der aktuellen Instanz lesen
@@ -118,8 +125,12 @@ class BTPClient extends IPSModule {
     else if ($trigger==2) {
         IPS_LogMessage('BTPClient',"Bluetooth Ereignis");
       //$bt_info ist der aktuelle BT-Zustand
+        $bt_state=$bt_info;
+        if($this->ReadPropertyInteger('idBluetoothInfo2')!=0){  
+    	$bt_state=$bt_info | $bt_info_ad;
+        }
         $aktState=$aktState & 1; // erste Stelle filtern
-        $state=$aktState | ($bt_info<<1);
+        $state=$aktState | ($bt_state<<1);
         SetValueInteger($id_aktState, $state);
         $time_stamp = time();
         IPS_LogMessage('BTPClient',"Eintrag (".$id_aktState.") aktualisiert!");
