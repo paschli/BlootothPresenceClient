@@ -1,7 +1,8 @@
 {
   "elements": [
     { "name": "idSourceString", "type": "SelectVariable", "caption": "ID Source String" },
-    { "name": "idBluetoothInfo", "type": "SelectVariable", "caption": "ID Bluetooth Status" },
+    { "name": "idBluetoothInfo1", "type": "SelectVariable", "caption": "ID Bluetooth Status" },
+    { "name": "idBluetoothInfo2", "type": "SelectVariable", "caption": "ID Bluetooth Status (additional)" },
     { "name": "CheckPush", "type": "CheckBox", "caption": "Push Nachricht bei Statusänderung" }
   ],
   "actions": [
